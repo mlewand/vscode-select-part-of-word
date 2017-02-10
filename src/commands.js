@@ -1,18 +1,12 @@
-const CHAR_TYPE = {
-		OTHER: 1,
-		UPPER_CASE: 2,
-		LOWER_CASE: 3
+const common = require( './common' ),
+	CHAR_TYPE = common.CHAR_TYPE,
+	STRATEGIES = {
+		CAMEL_CASE: 1,
+		SAME_CASE: 2
 	},
-	regExpMapping = {
-		[ CHAR_TYPE.LOWER_CASE ]: /[a-z]/,
-		[ CHAR_TYPE.UPPER_CASE ]: /[A-Z]/
-	},
+	regExpMapping = common.regExpMapping,
 	// RegExp to match anything BUT the type referenced by a key.
-	regExpExcludeMapping = {
-		[ CHAR_TYPE.LOWER_CASE ]: /.(?![a-z])/,
-		[ CHAR_TYPE.UPPER_CASE ]: /.(?![A-Z])/,
-		[ CHAR_TYPE.OTHER ]: /[a-zA-Z0-9]/
-	};
+	regExpExcludeMapping = common.regExpExcludeMapping;
 
 const vscode = require( 'vscode' );
 
