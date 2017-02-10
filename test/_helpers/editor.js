@@ -23,7 +23,14 @@ module.exports = {
             let selOffset = doc.offsetAt( sel.start );
             content = content.substr( 0, selOffset ) + '^' + content.substr( selOffset );
         } else {
-            content = 'ranged sel unsupported :()';
+            let startOffset = doc.offsetAt( sel.start ),
+                endOffset = doc.offsetAt( sel.end ),
+                startMarker = sel.start.isEqual( sel.active ) ? '{' : '[',
+                endMarker = sel.end.isEqual( sel.active ) ? '}' : ']';
+
+            content = content.substr( 0, startOffset ) + startMarker +
+                content.substring( startOffset, endOffset ) + endMarker +
+                content.substr( endOffset );
         }
 
         return content;
