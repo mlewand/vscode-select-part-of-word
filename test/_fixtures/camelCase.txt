@@ -1,0 +1,2 @@
+thisIsACamelCaseWord itsSuperFun   to	writeIn-CamelCase
+you could also mix it with12345wordsToSee how it behaves with numbers
