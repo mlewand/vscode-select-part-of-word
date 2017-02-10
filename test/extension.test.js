@@ -43,6 +43,22 @@
                     assert.equal( editorHelpers.getContentWithSelections( textEditor ), expected );
                 } );
         } );
+
+        test( 'Expand within camel case ranged', function() {
+            return vscode.workspace.openTextDocument( path.join( __dirname, '_fixtures', 'camelCase.txt' ) )
+                .then( ( doc ) => {
+                    return vscode.window.showTextDocument( doc );
+                } )
+                .then( textEditor => {
+                    let expected = '[thisIs}ACamelCaseWord itsSuperFun   to	writeIn-CamelCase\n' +
+                        'you could also mix it with12345wordsToSee how it behaves with numbers';
+                    textEditor.selection = new vscode.Selection( 0, 0, 0, 4 );
+
+                    commands.selectRight( textEditor );
+
+                    assert.equal( editorHelpers.getContentWithSelections( textEditor ), expected );
+                } );
+        } );
     } );
 
     suite( '_getCharType', function() {
