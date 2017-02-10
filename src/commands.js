@@ -10,14 +10,14 @@ const common = require( './common' ),
 
 module.exports = {
 	moveRight( textEditor ) {
-		let newSel = this._moveSelectionRight( textEditor.document, textEditor.selections[ 0 ] );
+		let sel = textEditor.selections[ 0 ],
+			newPos = this._movePositionRight( textEditor.document, sel.active );
 
-		if ( newSel ) {
+		if ( newPos ) {
 			// Update the selection.
-			textEditor.selection = newSel;
+			textEditor.selection = new vscode.Selection( newPos, newPos );
 		}
 	},
-
 
 	/**
 	 * Expands (or shrinks depending where range's active position is) the selection to the right side of text.
