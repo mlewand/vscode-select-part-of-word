@@ -27,9 +27,9 @@ module.exports = {
 	 * @param {TextEditor} textEditor
 	 */
 	selectRight( textEditor ) {
-		let sel = textEditor.selections[ 0 ];
-		let newPos = this._movePositionRight( textEditor.document, sel.active );
-		let newSel = new vscode.Selection( sel.anchor, newPos );
+		let sel = textEditor.selections[ 0 ],
+			newPos = this._movePositionRight( textEditor.document, sel.active ),
+			newSel = new vscode.Selection( sel.anchor, newPos );
 
 		if ( newSel ) {
 			// Update the selection.
@@ -56,11 +56,8 @@ module.exports = {
 			textAhead = lineText.substr( position.character ),
 			lastChar = position.character > 0 ? lineText.substr( position.character - 1, 1 ) : ' ',
 			endLine = position.line,
-			endPos = null;
-
-		let curCharacterType = this._getCharType( textAhead[ 0 ] );
-
-		endPos = position.character + textAhead.search( regExpExcludeMapping[ curCharacterType ] ) + 1;
+			curCharacterType = this._getCharType( textAhead[ 0 ] )
+			endPos = position.character + textAhead.search( regExpExcludeMapping[ curCharacterType ] ) + 1;
 
 		if ( endPos === -1 ) {
 			return position;
