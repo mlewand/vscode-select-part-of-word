@@ -55,36 +55,28 @@ module.exports = {
 			lastCharType = this._getCharType( position.character > 0 ? lineText.substr( position.character - 1, 1 ) : ' ' ),
 			endLine = position.line,
 			curCharType = this._getCharType( textAhead[ 0 ] ),
-			endPos;
+			endPos = null;
 
-		if ( curCharType === lastCharType ) {
-			// If we had a couple of same case letters, we just want to put the selection before the first
-			// occurrence of a different case.
-			endPos = position.character + textAhead.search( regExpExcludeMapping[ curCharType ] ) + 1;
-		} else {
-			// Hanles cases like:
+		if ( curCharType !== lastCharType ) {
+			// Handles cases like:
 			// is^CorrectColor
 			// isC^orrectColor
 			// is ^correct
 			// is^ correct
-
 			let farAheadCharType = this._getCharType( textAhead[ 1 ] );
 
 			if ( curCharType !== farAheadCharType ) {
 				// Case 1 above, caret is before the first capitalized letter in camel case.
 				// Note we're skipping first char (capitalized letter), and because of that we're adding 2.
 				endPos = position.character + textAhead.substr( 1 ).search( regExpExcludeMapping[ farAheadCharType ] ) + 2;
-			} else {
-				endPos = position.character + textAhead.search( regExpExcludeMapping[ curCharType ] ) + 1;
 			}
 		}
 
-		if ( endPos === -1 ) {
-			return position;
-		} else {
-			// return position.with( position.line, endPos + 1 );
-			return new vscode.Position( position.line, endPos );
+		if ( endPos === null ) {
+			endPos = position.character + textAhead.search( regExpExcludeMapping[ curCharType ] ) + 1;
 		}
+
+		return new vscode.Position( position.line, endPos );
 	},
 
 	/**
