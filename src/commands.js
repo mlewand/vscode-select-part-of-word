@@ -37,17 +37,6 @@ module.exports = {
 
 	moveLeft( textEditor ) {},
 
-	_moveSelectionRight( doc, sel ) {
-		let end = !sel.isReversed ? sel.end : sel.start,
-			anchor = !sel.isReversed ? sel.start : sel.end,
-			lineText = doc.lineAt( end ).text,
-			// The text after the selection.
-			textAhead = lineText.substr( end.character ),
-			lastChar = end.character > 0 ? lineText.substr( end.character - 1, 1 ) : ' ';
-
-		return new vscode.Selection( anchor, end.with( end.line, end.character + 1 ) );
-	},
-
 	_movePositionRight( doc, position ) {
 		let lineText = doc.lineAt( position ).text,
 			// The text after the selection.
