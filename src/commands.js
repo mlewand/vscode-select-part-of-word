@@ -116,7 +116,7 @@ module.exports = {
 				if ( right ) {
 					moveOffset = siblingText.substr( 1 ).search( regExpExcludeMapping[ farAheadCharType ] );
 
-					endPos = moveOffset === - 1 ?
+					endPos = moveOffset === -1 ?
 						// No other characters found in this line.
 						lineText.length :
 						// Note we're skipping first char (capitalized letter), and because of that we're adding 1.
@@ -146,6 +146,54 @@ module.exports = {
 		}
 
 		return new vscode.Position( position.line, endPos );
+	},
+
+	/**
+	 * Returns lines ahead your selection, e.g. for text like:
+	 *
+	 *		aa^aa
+	 *		bb
+	 *		cc
+	 *
+	 * Generator will return values: `[ 0, 'aa' ], [ 1, 'bb' ], [ 2, 'cc' ]`.
+	 *
+	 * **Note how for first line only text after/before caret gets returned.**
+	 *
+	 * @param {Position} startPosition
+	 * @param {Boolean} [right=true] Tells the direction of generator.
+	 * @returns {Array} Array in form [ <lineNumber>, <lineContent> ], where lineNumber is a 0-based number.
+	 */
+	* _getAheadLines( doc, startPosition, right ) {
+		right = right === undefined ? true : right;
+
+		let curLine = startPosition.line,
+			// By how much we change line per iteration? Negative if we're going back.
+			lineNumberChange = right ? 1 : -1,
+			isLineValid = lineNumber => lineNumber >= 0 && lineNumber < doc.lineCount,
+			getLineText = lineNumber => {
+				let ret = doc.lineAt( lineNumber ).text;
+
+				if ( !right ) {
+					ret = reverseString( ret );
+				}
+
+				// First line is a special case, where we want to return only content from/to startPosition.
+				if ( lineNumber === startPosition.line ) {
+					ret = ret.substr( right ? startPosition.character : ret.length - startPosition.character );
+				}
+
+				return ret;
+			}
+
+		while ( isLineValid( curLine ) ) {
+			yield [
+				curLine,
+				getLineText( curLine )
+			];
+
+			// Set line number for further fetch.
+			curLine += lineNumberChange;
+		}
 	},
 
 	/**
