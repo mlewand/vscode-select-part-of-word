@@ -8,7 +8,18 @@ const common = require( './common' ),
 	regExpMapping = common.regExpMapping,
 	regExpExcludeMapping = common.regExpExcludeMapping;
 
+function reverseString( input ) {
+	return [ ...input ].reverse().join( '' );
+}
+
 module.exports = {
+	/**
+	 * Moves the selection to the right side. It will always collapse the range.
+	 *
+	 * Reference point is the __active__ boundary of the selection.
+	 *
+	 * @param {TextEditor} textEditor
+	 */
 	moveRight( textEditor ) {
 		let sel = textEditor.selections[ 0 ],
 			newPos = this._movePositionRight( textEditor.document, sel.active );
@@ -35,34 +46,75 @@ module.exports = {
 		}
 	},
 
-	moveLeft( textEditor ) {},
+	/**
+	 * Moves the selection to the left side. It will always collapse the range.
+	 *
+	 * Reference point is the __active__ boundary of the selection.
+	 *
+	 * @param {TextEditor} textEditor
+	 */
+	moveLeft( textEditor ) {
+		let sel = textEditor.selections[ 0 ],
+			newPos = this._movePositionLeft( textEditor.document, sel.active );
+
+		if ( newPos ) {
+			// Update the selection.
+			textEditor.selection = new vscode.Selection( newPos, newPos );
+		}
+	},
 
 	_movePositionRight( doc, position ) {
+		return this._movePosition( doc, position, true );
+	},
+
+	_movePositionLeft( doc, position ) {
+		return this._movePosition( doc, position, false );
+	},
+
+	/**
+	 * A generic method for {@link _movePositionRight} and {@link _movePositionLeft}.
+	 *
+	 * @param {TextDocument} doc
+	 * @param {Position} position
+	 */
+	_movePosition( doc, position, right ) {
 		let lineText = doc.lineAt( position ).text,
 			// The text after the selection.
-			textAhead = lineText.substr( position.character ),
-			lastCharType = this._getCharType( position.character > 0 ? lineText.substr( position.character - 1, 1 ) : ' ' ),
-			endLine = position.line,
-			curCharType = this._getCharType( textAhead[ 0 ] ),
+			siblingText = right ? lineText.substr( position.character ) : lineText.substr( 0, position.character ),
+			previousChar = right ? lineText.substr( position.character - 1, 1 ) : lineText[ position.character ],
+			lastCharType = this._getCharType( previousChar || ' ' ),
+			curCharType = this._getCharType( right ? siblingText[ 0 ] : siblingText[ siblingText.length - 1 ] ),
 			endPos = null;
 
 		if ( curCharType !== lastCharType ) {
-			// Handles cases like:
+			// Handles cases like (LTR):
 			// is^CorrectColor
 			// isC^orrectColor
 			// is ^correct
 			// is^ correct
-			let farAheadCharType = this._getCharType( textAhead[ 1 ] );
+			let farAheadCharType = this._getCharType( siblingText[ 1 ] );
 
 			if ( curCharType !== farAheadCharType ) {
 				// Case 1 above, caret is before the first capitalized letter in camel case.
 				// Note we're skipping first char (capitalized letter), and because of that we're adding 1.
-				endPos = position.character + textAhead.substr( 1 ).search( regExpExcludeMapping[ farAheadCharType ] ) + 1;
+				endPos = position.character + siblingText.substr( 1 ).search( regExpExcludeMapping[ farAheadCharType ] ) + 1;
+
+				if ( !right ) {
+					let moveOffset = reverseString( siblingText ).search( regExpExcludeMapping[ curCharType ] );
+
+					endPos = moveOffset === -1 ?
+						// No other characters found in this line.
+						endPos = 0 :
+						// Or just subtract offset from start char position.
+						position.character - moveOffset;
+
+				}
 			}
 		}
 
 		if ( endPos === null ) {
-			endPos = position.character + textAhead.search( regExpExcludeMapping[ curCharType ] );
+			endPos = right ? ( position.character + siblingText.search( regExpExcludeMapping[ curCharType ] ) ) :
+				( position.character - reverseString( siblingText ).search( regExpExcludeMapping[ curCharType ] ) - 1 );
 		}
 
 		return new vscode.Position( position.line, endPos );
