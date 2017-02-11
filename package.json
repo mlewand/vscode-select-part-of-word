@@ -11,9 +11,30 @@
         "Other"
     ],
     "activationEvents": [
+        "*"
     ],
     "main": "./extension",
     "contributes": {
+        "commands": [ {
+            "command": "selectPartOfWord.moveRight",
+            "title": "Move right by a part of word"
+        }, {
+            "command": "selectPartOfWord.moveLeft",
+            "title": "Move left by a part of word"
+        }, {
+            "command": "selectPartOfWord.selectRight",
+            "title": "Select word on the right"
+        } ],
+        "keybindings": [ {
+            "command": "selectPartOfWord.selectRight",
+            "key": "ctrl+alt+shift+right"
+        }, {
+            "command": "selectPartOfWord.moveRight",
+            "key": "ctrl+alt+right"
+        }, {
+            "command": "selectPartOfWord.moveLeft",
+            "key": "ctrl+alt+left"
+        } ]
     },
     "scripts": {
         "postinstall": "node ./node_modules/vscode/bin/install",
