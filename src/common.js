@@ -13,8 +13,8 @@ module.exports = {
 	},
 	// RegExp to match anything BUT the type referenced by a key.
 	regExpExcludeMapping: {
-		[ CHAR_TYPE.LOWER_CASE ]: /.(?![a-z])/,
-		[ CHAR_TYPE.UPPER_CASE ]: /.(?![A-Z])/,
+		[ CHAR_TYPE.LOWER_CASE ]: /(?![a-z])./,
+		[ CHAR_TYPE.UPPER_CASE ]: /(?![A-Z])./,
 		[ CHAR_TYPE.OTHER ]: /[a-zA-Z0-9]/
 	}
 };

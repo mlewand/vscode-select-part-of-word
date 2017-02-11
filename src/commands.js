@@ -67,13 +67,13 @@ module.exports = {
 
 			if ( curCharType !== farAheadCharType ) {
 				// Case 1 above, caret is before the first capitalized letter in camel case.
-				// Note we're skipping first char (capitalized letter), and because of that we're adding 2.
-				endPos = position.character + textAhead.substr( 1 ).search( regExpExcludeMapping[ farAheadCharType ] ) + 2;
+				// Note we're skipping first char (capitalized letter), and because of that we're adding 1.
+				endPos = position.character + textAhead.substr( 1 ).search( regExpExcludeMapping[ farAheadCharType ] ) + 1;
 			}
 		}
 
 		if ( endPos === null ) {
-			endPos = position.character + textAhead.search( regExpExcludeMapping[ curCharType ] ) + 1;
+			endPos = position.character + textAhead.search( regExpExcludeMapping[ curCharType ] );
 		}
 
 		return new vscode.Position( position.line, endPos );

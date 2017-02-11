@@ -12,7 +12,7 @@
     let editorHelpers = require( './_helpers/editor' );
 
     suite( 'commamnds.moveRight', function() {
-        test( 'Expand within same text case collapsed', function() {
+        test( 'Move within same text case collapsed', function() {
             return vscode.workspace.openTextDocument( path.join( __dirname, '_fixtures', 'camelCase.txt' ) )
                 .then( ( doc ) => {
                     return vscode.window.showTextDocument( doc );
@@ -28,7 +28,7 @@
                 } );
         } );
 
-        test( 'Expand within same text case ranged', function() {
+        test( 'Move within same text case ranged', function() {
             return vscode.workspace.openTextDocument( path.join( __dirname, '_fixtures', 'camelCase.txt' ) )
                 .then( ( doc ) => {
                     return vscode.window.showTextDocument( doc );
@@ -44,7 +44,7 @@
                 } );
         } );
 
-        test( 'Expand within camel case ranged', function() {
+        test( 'Move within camel case ranged', function() {
             return vscode.workspace.openTextDocument( path.join( __dirname, '_fixtures', 'camelCase.txt' ) )
                 .then( ( doc ) => {
                     return vscode.window.showTextDocument( doc );
@@ -53,6 +53,22 @@
                     let expected = 'thisIs^ACamelCaseWord itsSuperFun   to	writeIn-CamelCase\n' +
                         'you could also mix it with12345wordsToSee how it behaves with numbers';
                     textEditor.selection = new vscode.Selection( 0, 0, 0, 4 );
+
+                    commands.moveRight( textEditor );
+
+                    assert.equal( editorHelpers.getContentWithSelections( textEditor ), expected );
+                } );
+        } );
+
+        test( 'Move over whitespace', function() {
+            return vscode.workspace.openTextDocument( path.join( __dirname, '_fixtures', 'camelCase.txt' ) )
+                .then( ( doc ) => {
+                    return vscode.window.showTextDocument( doc );
+                } )
+                .then( textEditor => {
+                    let expected = 'thisIsACamelCaseWord itsSuperFun   ^to	writeIn-CamelCase\n' +
+                        'you could also mix it with12345wordsToSee how it behaves with numbers';
+                    textEditor.selection = new vscode.Selection( 0, 32, 0, 32 );
 
                     commands.moveRight( textEditor );
 
