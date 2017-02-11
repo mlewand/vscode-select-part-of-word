@@ -99,12 +99,15 @@ module.exports = {
 	_movePosition( doc, position, right ) {
 		let linesGenerator = this._getAheadLines( doc, position, Boolean( right ) );
 
-		let lineText = doc.lineAt( position ).text,
+		let curLine = position.line,
+			lineText = doc.lineAt( curLine ).text,
+			nextLineFeed = linesGenerator.next().value,
 			// The text after the selection.
-			siblingText = right ? lineText.substr( position.character ) : lineText.substr( 0, position.character ),
+			// siblingText = right ? lineText.substr( position.character ) : lineText.substr( 0, position.character ),
+			siblingText =  nextLineFeed[ 1 ],
 			previousChar = right ? lineText[ position.character - 1 ] : lineText[ position.character ],
 			lastCharType = this._getCharType( previousChar || ' ' ),
-			curCharType = this._getCharType( right ? siblingText[ 0 ] : siblingText[ siblingText.length - 1 ] ),
+			curCharType = this._getCharType( siblingText[ 0 ] ),
 			endPos = null;
 
 		if ( curCharType !== lastCharType ) {
@@ -113,7 +116,7 @@ module.exports = {
 			// isC^orrectColor
 			// is ^correct
 			// is^ correct
-			let farAheadCharType = this._getCharType( siblingText[ 1 ] ),
+			let farAheadCharType = this._getCharType( right ? siblingText[ 1 ] : siblingText.substr( -2, 1 ) ),
 				moveOffset;
 
 			if ( curCharType !== farAheadCharType ) {
@@ -127,7 +130,7 @@ module.exports = {
 						// Note we're skipping first char (capitalized letter), and because of that we're adding 1.
 						position.character + moveOffset + 1;
 				} else {
-					moveOffset = reverseString( siblingText ).search( regExpExcludeMapping[ curCharType ] );
+					moveOffset = siblingText.search( regExpExcludeMapping[ curCharType ] );
 
 					endPos = moveOffset === -1 ?
 						// No other characters found in this line.
@@ -140,7 +143,7 @@ module.exports = {
 
 		if ( endPos === null ) {
 			exclusionPosition = right ? siblingText.search( regExpExcludeMapping[ curCharType ] ) :
-				reverseString( siblingText ).search( regExpExcludeMapping[ curCharType ] );
+				siblingText.search( regExpExcludeMapping[ curCharType ] );
 
 			if ( exclusionPosition !== -1 ) {
 				endPos = right ? position.character + exclusionPosition :
@@ -150,7 +153,7 @@ module.exports = {
 			}
 		}
 
-		return new vscode.Position( position.line, endPos );
+		return new vscode.Position( curLine, endPos );
 	},
 
 	/**
