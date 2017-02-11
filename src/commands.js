@@ -8,6 +8,8 @@ const common = require( './common' ),
 	regExpMapping = common.regExpMapping,
 	regExpExcludeMapping = common.regExpExcludeMapping;
 
+const MATCH_NOT_FOUND = -2;
+
 function reverseString( input ) {
 	return [ ...input ].reverse().join( '' );
 }
@@ -92,12 +94,15 @@ module.exports = {
 	 *
 	 * @param {TextDocument} doc
 	 * @param {Position} position
+	 * @param {Boolean} [right]
 	 */
 	_movePosition( doc, position, right ) {
+		let linesGenerator = this._getAheadLines( doc, position, Boolean( right ) );
+
 		let lineText = doc.lineAt( position ).text,
 			// The text after the selection.
 			siblingText = right ? lineText.substr( position.character ) : lineText.substr( 0, position.character ),
-			previousChar = right ? lineText.substr( position.character - 1, 1 ) : lineText[ position.character ],
+			previousChar = right ? lineText[ position.character - 1 ] : lineText[ position.character ],
 			lastCharType = this._getCharType( previousChar || ' ' ),
 			curCharType = this._getCharType( right ? siblingText[ 0 ] : siblingText[ siblingText.length - 1 ] ),
 			endPos = null;
