@@ -31,6 +31,23 @@ module.exports = {
 	},
 
 	/**
+	 * Moves the selection to the left side. It will always collapse the range.
+	 *
+	 * Reference point is the __active__ boundary of the selection.
+	 *
+	 * @param {TextEditor} textEditor
+	 */
+	moveLeft( textEditor ) {
+		let sel = textEditor.selections[ 0 ],
+			newPos = this._movePositionLeft( textEditor.document, sel.active );
+
+		if ( newPos ) {
+			// Update the selection.
+			textEditor.selection = new vscode.Selection( newPos, newPos );
+		}
+	},
+
+	/**
 	 * Expands (or shrinks depending where range's active position is) the selection to the right side of text.
 	 *
 	 * @param {TextEditor} textEditor
@@ -47,19 +64,18 @@ module.exports = {
 	},
 
 	/**
-	 * Moves the selection to the left side. It will always collapse the range.
-	 *
-	 * Reference point is the __active__ boundary of the selection.
+	 * Expands (or shrinks depending where range's active position is) the selection to the left side of text.
 	 *
 	 * @param {TextEditor} textEditor
 	 */
-	moveLeft( textEditor ) {
+	selectLeft( textEditor ) {
 		let sel = textEditor.selections[ 0 ],
-			newPos = this._movePositionLeft( textEditor.document, sel.active );
+			newPos = this._movePositionLeft( textEditor.document, sel.active ),
+			newSel = new vscode.Selection( sel.anchor, newPos );
 
-		if ( newPos ) {
+		if ( newSel ) {
 			// Update the selection.
-			textEditor.selection = new vscode.Selection( newPos, newPos );
+			textEditor.selection = newSel;
 		}
 	},
 

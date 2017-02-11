@@ -24,16 +24,22 @@
         }, {
             "command": "selectPartOfWord.selectRight",
             "title": "Select word on the right"
+        }, {
+            "command": "selectPartOfWord.selectLeft",
+            "title": "Select word on the left"
         } ],
         "keybindings": [ {
-            "command": "selectPartOfWord.selectRight",
-            "key": "ctrl+alt+shift+right"
-        }, {
             "command": "selectPartOfWord.moveRight",
             "key": "ctrl+alt+right"
         }, {
             "command": "selectPartOfWord.moveLeft",
             "key": "ctrl+alt+left"
+        }, {
+            "command": "selectPartOfWord.selectRight",
+            "key": "ctrl+alt+shift+right"
+        }, {
+            "command": "selectPartOfWord.selectLeft",
+            "key": "ctrl+alt+shift+left"
         } ]
     },
     "scripts": {
