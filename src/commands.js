@@ -97,59 +97,84 @@ module.exports = {
 	 * @param {Boolean} [right]
 	 */
 	_movePosition( doc, position, right ) {
-		let linesGenerator = this._getAheadLines( doc, position, Boolean( right ) );
+		let linesGenerator = this._getAheadLines( doc, position, Boolean( right ) ),
+			endPos = null,
+			curLine,
+			nextLineFeed;
 
-		let curLine = position.line,
-			lineText = doc.lineAt( curLine ).text,
-			nextLineFeed = linesGenerator.next().value,
-			// The text after the selection.
-			// siblingText = right ? lineText.substr( position.character ) : lineText.substr( 0, position.character ),
-			siblingText =  nextLineFeed[ 1 ],
-			previousChar = right ? lineText[ position.character - 1 ] : lineText[ position.character ],
-			lastCharType = this._getCharType( previousChar || ' ' ),
-			curCharType = this._getCharType( siblingText[ 0 ] ),
-			endPos = null;
+		// @todo extract it to a separate method.
+		( function() {
+			// First line is special, there's multiple different checks to be done.
+			nextLineFeed = linesGenerator.next().value;
 
-		if ( curCharType !== lastCharType ) {
-			// Handles cases like (LTR):
-			// is^CorrectColor
-			// isC^orrectColor
-			// is ^correct
-			// is^ correct
-			let farAheadCharType = this._getCharType( right ? siblingText[ 1 ] : siblingText.substr( -2, 1 ) ),
-				moveOffset;
+			curLine = nextLineFeed[ 0 ];
 
-			if ( curCharType !== farAheadCharType ) {
-				// Case 1 above, caret is before the first capitalized letter in camel case.
-				if ( right ) {
-					moveOffset = siblingText.substr( 1 ).search( regExpExcludeMapping[ farAheadCharType ] );
+			let lineText = doc.lineAt( curLine ).text,
+				// The text after the selection.
+				// siblingText = right ? lineText.substr( position.character ) : lineText.substr( 0, position.character ),
+				siblingText =  nextLineFeed[ 1 ],
+				previousChar = right ? lineText[ position.character - 1 ] : lineText[ position.character ],
+				lastCharType = this._getCharType( previousChar || ' ' ),
+				curCharType = this._getCharType( siblingText[ 0 ] );
 
-					endPos = moveOffset === -1 ?
-						// No other characters found in this line.
-						lineText.length :
-						// Note we're skipping first char (capitalized letter), and because of that we're adding 1.
-						position.character + moveOffset + 1;
-				} else {
-					moveOffset = siblingText.search( regExpExcludeMapping[ curCharType ] );
+			if ( curCharType !== lastCharType ) {
+				// Handles cases like (LTR):
+				// is^CorrectColor
+				// isC^orrectColor
+				// is ^correct
+				// is^ correct
+				let farAheadCharType = this._getCharType( right ? siblingText[ 1 ] : siblingText.substr( -2, 1 ) ),
+					moveOffset;
 
-					endPos = moveOffset === -1 ?
-						// No other characters found in this line.
-						0 :
-						// Or just subtract offset from start char position.
-						position.character - moveOffset;
+				if ( curCharType !== farAheadCharType ) {
+					// Case 1 above, caret is before the first capitalized letter in camel case.
+					if ( right ) {
+						moveOffset = siblingText.substr( 1 ).search( regExpExcludeMapping[ farAheadCharType ] );
+
+						endPos = moveOffset === -1 ?
+							// No other characters found in this line.
+							lineText.length : // Not found... @todo: we'll be skipping to next line here.
+							// Note we're skipping first char (capitalized letter), and because of that we're adding 1.
+							position.character + moveOffset + 1;
+					} else {
+						moveOffset = siblingText.search( regExpExcludeMapping[ curCharType ] );
+
+						endPos = moveOffset === -1 ?
+							// No other characters found in this line.
+							0 : // Not found... @todo: we'll be skipping to next line here.
+							// Or just subtract offset from start char position.
+							position.character - moveOffset;
+					}
 				}
+			}
+
+			if ( endPos === null ) {
+				exclusionPosition = right ? siblingText.search( regExpExcludeMapping[ curCharType ] ) :
+					siblingText.search( regExpExcludeMapping[ curCharType ] );
+
+				if ( exclusionPosition !== -1 ) {
+					endPos = right ? position.character + exclusionPosition :
+						position.character - exclusionPosition - 1;
+				}
+			}
+		} ).call( this );
+
+		while ( endPos === null && ( nextLineFeed = linesGenerator.next().value ) ) {
+			curLine = nextLineFeed[ 0 ];
+			let lineText = nextLineFeed[ 1 ],
+				match = lineText.search( /[^\s]/ );
+
+			if ( match !== -1 ) {
+				endPos = right ? match : lineText.length - match;
 			}
 		}
 
+		// Final fallback - after all the iteration if nothing can be matched, move sel to doc end / beginning.
 		if ( endPos === null ) {
-			exclusionPosition = right ? siblingText.search( regExpExcludeMapping[ curCharType ] ) :
-				siblingText.search( regExpExcludeMapping[ curCharType ] );
-
-			if ( exclusionPosition !== -1 ) {
-				endPos = right ? position.character + exclusionPosition :
-					position.character - exclusionPosition - 1;
+			if ( right ){
+				return new vscode.Position( doc.lineCount-1, doc.lineAt( doc.lineCount-1 ).text.length );
 			} else {
-				endPos = right ? lineText.length : 0;
+				return new vscode.Position( 0, 0 );
 			}
 		}
 
@@ -168,7 +193,7 @@ module.exports = {
 	 * **Note how for first line only text after/before caret gets returned.**
 	 *
 	 * @param {Position} startPosition
-	 * @param {Boolean} [right=true] Tells the direction of generator.
+	 * @param {Boolean} [right=true] Tells the direction of generator. If `false` returned lines text is also **reversed**.
 	 * @returns {Array} Array in form [ <lineNumber>, <lineContent> ], where lineNumber is a 0-based number.
 	 */
 	* _getAheadLines( doc, startPosition, right ) {

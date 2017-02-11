@@ -92,8 +92,8 @@
                         '\n' +
                         '\n' +
                         'aaa\n' +
-                        'bb\n';
-                    textEditor.selection = new vscode.Selection( 2, 0, 2, 0 );
+                        'bb';
+                    textEditor.selection = new vscode.Selection( 2, 6, 2, 6 );
 
                     commands.moveRight( textEditor );
 
@@ -176,6 +176,31 @@
                     let expected = 'thisIsACamelCaseWord itsSuperFun   to	writeIn-CamelCase\n' +
                         'you could also mix it with12345wordsToSee how it behaves with^ numbers';
                     textEditor.selection = new vscode.Selection( 1, 69, 1, 69 );
+
+                    commands.moveLeft( textEditor );
+
+                    assert.equal( editorHelpers.getContentWithSelections( textEditor ), expected );
+                } );
+        } );
+
+        test( 'Move over empty lines', function() {
+            return vscode.workspace.openTextDocument( path.join( __dirname, '_fixtures', 'whitespaceTest.txt' ) )
+                .then( ( doc ) => {
+                    return vscode.window.showTextDocument( doc );
+                } )
+                .then( textEditor => {
+                    let expected = '\n' +
+                        '\n' +
+                        'thisIs^\n' +
+                        '\n' +
+                        '\n' +
+                        'fancyWhitespaceTest file\n' +
+                        '\n' +
+                        '\n' +
+                        '\n' +
+                        'aaa\n' +
+                        'bb';
+                    textEditor.selection = new vscode.Selection( 5, 0, 5, 0 );
 
                     commands.moveLeft( textEditor );
 
