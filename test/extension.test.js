@@ -75,6 +75,22 @@
                     assert.equal( editorHelpers.getContentWithSelections( textEditor ), expected );
                 } );
         } );
+
+        test( 'Move to boundary end', function() {
+            return vscode.workspace.openTextDocument( path.join( __dirname, '_fixtures', 'camelCase.txt' ) )
+                .then( ( doc ) => {
+                    return vscode.window.showTextDocument( doc );
+                } )
+                .then( textEditor => {
+                    let expected = 'thisIsACamelCaseWord itsSuperFun   to	writeIn-CamelCase^\n' +
+                        'you could also mix it with12345wordsToSee how it behaves with numbers';
+                    textEditor.selection = new vscode.Selection( 0, 51, 0, 51 );
+
+                    commands.moveRight( textEditor );
+
+                    assert.equal( editorHelpers.getContentWithSelections( textEditor ), expected );
+                } );
+        } );
     } );
 
 

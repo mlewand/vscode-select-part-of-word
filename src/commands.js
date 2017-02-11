@@ -108,22 +108,27 @@ module.exports = {
 			// isC^orrectColor
 			// is ^correct
 			// is^ correct
-			let farAheadCharType = this._getCharType( siblingText[ 1 ] );
+			let farAheadCharType = this._getCharType( siblingText[ 1 ] ),
+				moveOffset;
 
 			if ( curCharType !== farAheadCharType ) {
 				// Case 1 above, caret is before the first capitalized letter in camel case.
-				// Note we're skipping first char (capitalized letter), and because of that we're adding 1.
-				endPos = position.character + siblingText.substr( 1 ).search( regExpExcludeMapping[ farAheadCharType ] ) + 1;
+				if ( right ) {
+					moveOffset = siblingText.substr( 1 ).search( regExpExcludeMapping[ farAheadCharType ] );
 
-				if ( !right ) {
-					let moveOffset = reverseString( siblingText ).search( regExpExcludeMapping[ curCharType ] );
+					endPos = moveOffset === - 1 ?
+						// No other characters found in this line.
+						lineText.length :
+						// Note we're skipping first char (capitalized letter), and because of that we're adding 1.
+						position.character + moveOffset + 1;
+				} else {
+					moveOffset = reverseString( siblingText ).search( regExpExcludeMapping[ curCharType ] );
 
 					endPos = moveOffset === -1 ?
 						// No other characters found in this line.
-						endPos = 0 :
+						0 :
 						// Or just subtract offset from start char position.
 						position.character - moveOffset;
-
 				}
 			}
 		}
