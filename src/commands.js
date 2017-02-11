@@ -8,8 +8,6 @@ const common = require( './common' ),
 	regExpMapping = common.regExpMapping,
 	regExpExcludeMapping = common.regExpExcludeMapping;
 
-const MATCH_NOT_FOUND = -2;
-
 function reverseString( input ) {
 	return [ ...input ].reverse().join( '' );
 }
