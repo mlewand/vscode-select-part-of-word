@@ -11,7 +11,7 @@
     let path = require( 'path' );
     let editorHelpers = require( './_helpers/editor' );
 
-    suite( 'commamnds.moveRight', function() {
+    suite( 'commands.moveRight', function() {
         test( 'Move within same text case collapsed', function() {
             return vscode.workspace.openTextDocument( path.join( __dirname, '_fixtures', 'camelCase.txt' ) )
                 .then( ( doc ) => {
@@ -78,7 +78,7 @@
     } );
 
 
-    suite( 'commamnds.moveLeft', function() {
+    suite( 'commands.moveLeft', function() {
         test( 'Move within same text case collapsed', function() {
             return vscode.workspace.openTextDocument( path.join( __dirname, '_fixtures', 'camelCase.txt' ) )
                 .then( ( doc ) => {
@@ -112,7 +112,7 @@
         } );
     } );
 
-    suite( 'commamnds.selectRight', function() {
+    suite( 'commands.selectRight', function() {
         test( 'Expand within same text case collapsed', function() {
             return vscode.workspace.openTextDocument( path.join( __dirname, '_fixtures', 'camelCase.txt' ) )
                 .then( ( doc ) => {
@@ -156,6 +156,56 @@
                     textEditor.selection = new vscode.Selection( 0, 0, 0, 4 );
 
                     commands.selectRight( textEditor );
+
+                    assert.equal( editorHelpers.getContentWithSelections( textEditor ), expected );
+                } );
+        } );
+    } );
+
+    suite( 'commands.selectLeft', function() {
+        test( 'Expand within same text case collapsed', function() {
+            return vscode.workspace.openTextDocument( path.join( __dirname, '_fixtures', 'camelCase.txt' ) )
+                .then( ( doc ) => {
+                    return vscode.window.showTextDocument( doc );
+                } )
+                .then( textEditor => {
+                    let expected = 'thisIsA{Camel]CaseWord itsSuperFun   to	writeIn-CamelCase\n' +
+                        'you could also mix it with12345wordsToSee how it behaves with numbers';
+                    textEditor.selection = new vscode.Selection( 0, 12, 0, 12 );
+
+                    commands.selectLeft( textEditor );
+
+                    assert.equal( editorHelpers.getContentWithSelections( textEditor ), expected );
+                } );
+        } );
+
+        test( 'Expand within same text case ranged', function() {
+            return vscode.workspace.openTextDocument( path.join( __dirname, '_fixtures', 'camelCase.txt' ) )
+                .then( ( doc ) => {
+                    return vscode.window.showTextDocument( doc );
+                } )
+                .then( textEditor => {
+                    let expected = 'thisIsA{Camel]CaseWord itsSuperFun   to	writeIn-CamelCase\n' +
+                        'you could also mix it with12345wordsToSee how it behaves with numbers';
+                    textEditor.selection = new vscode.Selection( 0, 12, 0, 10 );
+
+                    commands.selectLeft( textEditor );
+
+                    assert.equal( editorHelpers.getContentWithSelections( textEditor ), expected );
+                } );
+        } );
+
+        test( 'Expand within camel case ranged', function() {
+            return vscode.workspace.openTextDocument( path.join( __dirname, '_fixtures', 'camelCase.txt' ) )
+                .then( ( doc ) => {
+                    return vscode.window.showTextDocument( doc );
+                } )
+                .then( textEditor => {
+                    let expected = 'thisIsACamel{CaseWord] itsSuperFun   to	writeIn-CamelCase\n' +
+                        'you could also mix it with12345wordsToSee how it behaves with numbers';
+                    textEditor.selection = new vscode.Selection( 0, 20, 0, 16 );
+
+                    commands.selectLeft( textEditor );
 
                     assert.equal( editorHelpers.getContentWithSelections( textEditor ), expected );
                 } );
