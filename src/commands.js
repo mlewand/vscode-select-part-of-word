@@ -129,8 +129,15 @@ module.exports = {
 		}
 
 		if ( endPos === null ) {
-			endPos = right ? ( position.character + siblingText.search( regExpExcludeMapping[ curCharType ] ) ) :
-				( position.character - reverseString( siblingText ).search( regExpExcludeMapping[ curCharType ] ) - 1 );
+			exclusionPosition = right ? siblingText.search( regExpExcludeMapping[ curCharType ] ) :
+				reverseString( siblingText ).search( regExpExcludeMapping[ curCharType ] );
+
+			if ( exclusionPosition !== -1 ) {
+				endPos = right ? position.character + exclusionPosition :
+					position.character - exclusionPosition - 1;
+			} else {
+				endPos = right ? lineText.length : 0;
+			}
 		}
 
 		return new vscode.Position( position.line, endPos );
