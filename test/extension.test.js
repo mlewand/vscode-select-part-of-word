@@ -207,6 +207,31 @@
                     assert.equal( editorHelpers.getContentWithSelections( textEditor ), expected );
                 } );
         } );
+
+        test( 'Move to line boundary beginning having whitespace before it', function() {
+            return vscode.workspace.openTextDocument( path.join( __dirname, '_fixtures', 'whitespaceTest.txt' ) )
+                .then( ( doc ) => {
+                    return vscode.window.showTextDocument( doc );
+                } )
+                .then( textEditor => {
+                    let expected = '\n' +
+                        '\n' +
+                        '^thisIs\n' +
+                        '\n' +
+                        '\n' +
+                        'fancyWhitespaceTest file\n' +
+                        '\n' +
+                        '\n' +
+                        '\n' +
+                        'aaa\n' +
+                        'bb';
+                    textEditor.selection = new vscode.Selection( 2, 4, 2, 4 );
+
+                    commands.moveLeft( textEditor );
+
+                    assert.equal( editorHelpers.getContentWithSelections( textEditor ), expected );
+                } );
+        } );
     } );
 
     suite( 'commands.selectRight', function() {
