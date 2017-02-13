@@ -109,7 +109,7 @@ module.exports = {
 
 			let lineText = doc.lineAt( curLine ).text,
 				// The text after the selection.
-				siblingText =  nextLineFeed[ 1 ],
+				siblingText = nextLineFeed[ 1 ],
 				previousChar = right ? lineText[ position.character - 1 ] : lineText[ position.character ],
 				lastCharType = this._getCharType( previousChar || ' ' ),
 				curCharType = this._getCharType( siblingText[ 0 ] ),
@@ -144,7 +144,7 @@ module.exports = {
 							position.character - moveOffset;
 					}
 
-					if ( endPos === null ) {
+					if ( endPos === null && position.character !== lineBoundaryPosition ) {
 						endPos = lineBoundaryPosition;
 					}
 				}
@@ -177,8 +177,8 @@ module.exports = {
 
 		// Final fallback - after all the iteration if nothing can be matched, move sel to doc end / beginning.
 		if ( endPos === null ) {
-			if ( right ){
-				return new vscode.Position( doc.lineCount-1, doc.lineAt( doc.lineCount-1 ).text.length );
+			if ( right ) {
+				return new vscode.Position( doc.lineCount - 1, doc.lineAt( doc.lineCount - 1 ).text.length );
 			} else {
 				return new vscode.Position( 0, 0 );
 			}

@@ -91,7 +91,7 @@
                         '\n' +
                         '\n' +
                         '\n' +
-                        'aaa\n' +
+                        '\taaa\n' +
                         'bb';
                     textEditor.selection = new vscode.Selection( 2, 6, 2, 6 );
 
@@ -198,9 +198,34 @@
                         '\n' +
                         '\n' +
                         '\n' +
-                        'aaa\n' +
+                        '\taaa\n' +
                         'bb';
                     textEditor.selection = new vscode.Selection( 5, 0, 5, 0 );
+
+                    commands.moveLeft( textEditor );
+
+                    assert.equal( editorHelpers.getContentWithSelections( textEditor ), expected );
+                } );
+        } );
+
+        test( 'Move over empty lines with whitespace', function() {
+            return vscode.workspace.openTextDocument( path.join( __dirname, '_fixtures', 'whitespaceTest.txt' ) )
+                .then( ( doc ) => {
+                    return vscode.window.showTextDocument( doc );
+                } )
+                .then( textEditor => {
+                    let expected = '\n' +
+                        '\n' +
+                        'thisIs\n' +
+                        '\n' +
+                        '\n' +
+                        'fancyWhitespaceTest file^\n' +
+                        '\n' +
+                        '\n' +
+                        '\n' +
+                        '\taaa\n' +
+                        'bb';
+                    textEditor.selection = new vscode.Selection( 9, 0, 9, 0 );
 
                     commands.moveLeft( textEditor );
 
@@ -223,7 +248,7 @@
                         '\n' +
                         '\n' +
                         '\n' +
-                        'aaa\n' +
+                        '\taaa\n' +
                         'bb';
                     textEditor.selection = new vscode.Selection( 2, 4, 2, 4 );
 
