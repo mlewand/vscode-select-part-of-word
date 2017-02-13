@@ -109,11 +109,11 @@ module.exports = {
 
 			let lineText = doc.lineAt( curLine ).text,
 				// The text after the selection.
-				// siblingText = right ? lineText.substr( position.character ) : lineText.substr( 0, position.character ),
 				siblingText =  nextLineFeed[ 1 ],
 				previousChar = right ? lineText[ position.character - 1 ] : lineText[ position.character ],
 				lastCharType = this._getCharType( previousChar || ' ' ),
-				curCharType = this._getCharType( siblingText[ 0 ] );
+				curCharType = this._getCharType( siblingText[ 0 ] ),
+				lineBoundaryPosition = right ? lineText.length : 0;
 
 			if ( curCharType !== lastCharType ) {
 				// Handles cases like (LTR):
@@ -131,7 +131,7 @@ module.exports = {
 
 						endPos = moveOffset === -1 ?
 							// No other characters found in this line.
-							lineText.length : // Not found... @todo: we'll be skipping to next line here.
+							null : // Not found... @todo: we'll be skipping to next line here.
 							// Note we're skipping first char (capitalized letter), and because of that we're adding 1.
 							position.character + moveOffset + 1;
 					} else {
@@ -139,9 +139,13 @@ module.exports = {
 
 						endPos = moveOffset === -1 ?
 							// No other characters found in this line.
-							0 : // Not found... @todo: we'll be skipping to next line here.
+							null : // Not found... @todo: we'll be skipping to next line here.
 							// Or just subtract offset from start char position.
 							position.character - moveOffset;
+					}
+
+					if ( endPos === null ) {
+						endPos = lineBoundaryPosition;
 					}
 				}
 			}
@@ -154,6 +158,10 @@ module.exports = {
 					endPos = right ? position.character + exclusionPosition :
 						position.character - exclusionPosition - 1;
 				}
+			}
+
+			if ( endPos === null && position.character !== lineBoundaryPosition ) {
+				endPos = lineBoundaryPosition;
 			}
 		} ).call( this );
 
