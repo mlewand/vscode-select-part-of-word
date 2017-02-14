@@ -2,7 +2,7 @@
     "name": "select-part-of-word",
     "displayName": "Select part of word",
     "description": "An extension that allows you to move selection by a word in camel-case string.",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "publisher": "mlewand",
     "engines": {
         "vscode": "^1.5.0"
