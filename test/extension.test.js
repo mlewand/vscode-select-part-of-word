@@ -2,14 +2,13 @@
 ( function() {
     "use strict";
 
-    var assert = require( 'assert' );
-
-    var vscode = require( 'vscode' );
-    var myExtension = require( '../extension' );
-    var commands = require( '../src/commands' );
-    var Range = vscode.Range;
-    let path = require( 'path' );
-    let getContent = require( 'vscode-test-get-content' );
+    const assert = require( 'assert' ),
+        vscode = require( 'vscode' ),
+        myExtension = require( '../extension' ),
+        commands = require( '../src/commands' ),
+        Range = vscode.Range,
+        path = require( 'path' ),
+        getContent = require( 'vscode-test-get-content' );
 
     suite( 'commands.moveRight', function() {
         test( 'Move within same text case collapsed', function() {
