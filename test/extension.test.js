@@ -134,6 +134,22 @@
                 } );
         } );
 
+        test( 'Move within camelCase collapsed', function() {
+            return vscode.workspace.openTextDocument( path.join( __dirname, '_fixtures', 'jsCode.txt' ) )
+                .then( ( doc ) => {
+                    return vscode.window.showTextDocument( doc );
+                } )
+                .then( textEditor => {
+                    let expected = '		let sel = textEditor.selections[ 0 ],\n' +
+                        '			newPos = this._move^PositionRight( textEditor.document, sel.active )\n';
+                    textEditor.selection = new vscode.Selection( 1, 30, 1, 30 );
+
+                    commands.moveLeft( textEditor );
+
+                    assert.equal( getContent.withSelection( textEditor ), expected );
+                } );
+        } );
+
         test( 'Move from just after capitalized', function() {
             return vscode.workspace.openTextDocument( path.join( __dirname, '_fixtures', 'camelCase.txt' ) )
                 .then( ( doc ) => {
