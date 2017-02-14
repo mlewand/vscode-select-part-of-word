@@ -11,7 +11,10 @@
         "Other"
     ],
     "activationEvents": [
-        "*"
+        "onCommand:selectPartOfWord.moveRight",
+        "onCommand:selectPartOfWord.moveLeft",
+        "onCommand:selectPartOfWord.selectRight",
+        "onCommand:selectPartOfWord.selectLeft"
     ],
     "main": "./extension",
     "contributes": {
