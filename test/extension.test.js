@@ -9,7 +9,7 @@
     var commands = require( '../src/commands' );
     var Range = vscode.Range;
     let path = require( 'path' );
-    let editorHelpers = require( './_helpers/editor' );
+    let getContent = require( 'vscode-test-get-content' );
 
     suite( 'commands.moveRight', function() {
         test( 'Move within same text case collapsed', function() {
@@ -24,7 +24,7 @@
 
                     commands.moveRight( textEditor );
 
-                    assert.equal( editorHelpers.getContentWithSelections( textEditor ), expected );
+                    assert.equal( getContent.withSelection( textEditor ), expected );
                 } );
         } );
 
@@ -40,7 +40,7 @@
 
                     commands.moveRight( textEditor );
 
-                    assert.equal( editorHelpers.getContentWithSelections( textEditor ), expected );
+                    assert.equal( getContent.withSelection( textEditor ), expected );
                 } );
         } );
 
@@ -56,7 +56,7 @@
 
                     commands.moveRight( textEditor );
 
-                    assert.equal( editorHelpers.getContentWithSelections( textEditor ), expected );
+                    assert.equal( getContent.withSelection( textEditor ), expected );
                 } );
         } );
 
@@ -72,7 +72,7 @@
 
                     commands.moveRight( textEditor );
 
-                    assert.equal( editorHelpers.getContentWithSelections( textEditor ), expected );
+                    assert.equal( getContent.withSelection( textEditor ), expected );
                 } );
         } );
 
@@ -97,7 +97,7 @@
 
                     commands.moveRight( textEditor );
 
-                    assert.equal( editorHelpers.getContentWithSelections( textEditor ), expected );
+                    assert.equal( getContent.withSelection( textEditor ), expected );
                 } );
         } );
 
@@ -113,7 +113,7 @@
 
                     commands.moveRight( textEditor );
 
-                    assert.equal( editorHelpers.getContentWithSelections( textEditor ), expected );
+                    assert.equal( getContent.withSelection( textEditor ), expected );
                 } );
         } );
     } );
@@ -131,7 +131,7 @@
 
                     commands.moveLeft( textEditor );
 
-                    assert.equal( editorHelpers.getContentWithSelections( textEditor ), expected );
+                    assert.equal( getContent.withSelection( textEditor ), expected );
                 } );
         } );
 
@@ -147,7 +147,7 @@
 
                     commands.moveLeft( textEditor );
 
-                    assert.equal( editorHelpers.getContentWithSelections( textEditor ), expected );
+                    assert.equal( getContent.withSelection( textEditor ), expected );
                 } );
         } );
 
@@ -163,7 +163,7 @@
 
                     commands.moveLeft( textEditor );
 
-                    assert.equal( editorHelpers.getContentWithSelections( textEditor ), expected );
+                    assert.equal( getContent.withSelection( textEditor ), expected );
                 } );
         } );
 
@@ -179,7 +179,7 @@
 
                     commands.moveLeft( textEditor );
 
-                    assert.equal( editorHelpers.getContentWithSelections( textEditor ), expected );
+                    assert.equal( getContent.withSelection( textEditor ), expected );
                 } );
         } );
 
@@ -204,7 +204,7 @@
 
                     commands.moveLeft( textEditor );
 
-                    assert.equal( editorHelpers.getContentWithSelections( textEditor ), expected );
+                    assert.equal( getContent.withSelection( textEditor ), expected );
                 } );
         } );
 
@@ -229,7 +229,7 @@
 
                     commands.moveLeft( textEditor );
 
-                    assert.equal( editorHelpers.getContentWithSelections( textEditor ), expected );
+                    assert.equal( getContent.withSelection( textEditor ), expected );
                 } );
         } );
 
@@ -254,7 +254,7 @@
 
                     commands.moveLeft( textEditor );
 
-                    assert.equal( editorHelpers.getContentWithSelections( textEditor ), expected );
+                    assert.equal( getContent.withSelection( textEditor ), expected );
                 } );
         } );
     } );
@@ -272,7 +272,7 @@
 
                     commands.selectRight( textEditor );
 
-                    assert.equal( editorHelpers.getContentWithSelections( textEditor ), expected );
+                    assert.equal( getContent.withSelection( textEditor ), expected );
                 } );
         } );
 
@@ -288,7 +288,7 @@
 
                     commands.selectRight( textEditor );
 
-                    assert.equal( editorHelpers.getContentWithSelections( textEditor ), expected );
+                    assert.equal( getContent.withSelection( textEditor ), expected );
                 } );
         } );
 
@@ -304,7 +304,7 @@
 
                     commands.selectRight( textEditor );
 
-                    assert.equal( editorHelpers.getContentWithSelections( textEditor ), expected );
+                    assert.equal( getContent.withSelection( textEditor ), expected );
                 } );
         } );
 
@@ -320,7 +320,7 @@
 
                     commands.selectRight( textEditor );
 
-                    assert.equal( editorHelpers.getContentWithSelections( textEditor ), expected );
+                    assert.equal( getContent.withSelection( textEditor ), expected );
                 } );
         } );
     } );
@@ -338,7 +338,7 @@
 
                     commands.selectLeft( textEditor );
 
-                    assert.equal( editorHelpers.getContentWithSelections( textEditor ), expected );
+                    assert.equal( getContent.withSelection( textEditor ), expected );
                 } );
         } );
 
@@ -354,7 +354,7 @@
 
                     commands.selectLeft( textEditor );
 
-                    assert.equal( editorHelpers.getContentWithSelections( textEditor ), expected );
+                    assert.equal( getContent.withSelection( textEditor ), expected );
                 } );
         } );
 
@@ -370,7 +370,7 @@
 
                     commands.selectLeft( textEditor );
 
-                    assert.equal( editorHelpers.getContentWithSelections( textEditor ), expected );
+                    assert.equal( getContent.withSelection( textEditor ), expected );
                 } );
         } );
     } );
