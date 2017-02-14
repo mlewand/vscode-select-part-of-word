@@ -21,6 +21,8 @@ module.exports = {
 	 * @param {TextEditor} textEditor
 	 */
 	moveRight( textEditor ) {
+		textEditor = this._getEditor( textEditor );
+
 		let sel = textEditor.selections[ 0 ],
 			newPos = this._movePositionRight( textEditor.document, sel.active );
 
@@ -38,6 +40,8 @@ module.exports = {
 	 * @param {TextEditor} textEditor
 	 */
 	moveLeft( textEditor ) {
+		textEditor = this._getEditor( textEditor );
+
 		let sel = textEditor.selections[ 0 ],
 			newPos = this._movePositionLeft( textEditor.document, sel.active );
 
@@ -53,6 +57,8 @@ module.exports = {
 	 * @param {TextEditor} textEditor
 	 */
 	selectRight( textEditor ) {
+		textEditor = this._getEditor( textEditor );
+
 		let sel = textEditor.selections[ 0 ],
 			newPos = this._movePositionRight( textEditor.document, sel.active ),
 			newSel = new vscode.Selection( sel.anchor, newPos );
@@ -69,6 +75,8 @@ module.exports = {
 	 * @param {TextEditor} textEditor
 	 */
 	selectLeft( textEditor ) {
+		textEditor = this._getEditor( textEditor );
+
 		let sel = textEditor.selections[ 0 ],
 			newPos = this._movePositionLeft( textEditor.document, sel.active ),
 			newSel = new vscode.Selection( sel.anchor, newPos );
@@ -251,5 +259,25 @@ module.exports = {
 		}
 
 		return CHAR_TYPE.OTHER;
+	},
+
+	/**
+	 * Returns currently focused text editor.
+	 *
+	 * @param {TextEditor/null} [editor=null] If given it will be returned instead of looking for a default one.
+	 * @returns {TextEditor/undefined}
+	 */
+	_getEditor( textEditor ) {
+		return this._isTextEditor( textEditor ) ? textEditor : vscode.window.activeTextEditor;
+	},
+
+	/**
+	 *
+	 *
+	 * @param {any} editor
+	 * @returns {Boolean} `true` if `editor` looks like an instance of TextEditor.
+	 */
+	_isTextEditor( editor ) {
+		return editor && editor.document;
 	}
 };
