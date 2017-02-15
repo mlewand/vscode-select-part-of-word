@@ -59,7 +59,39 @@
                 } );
         } );
 
-        test( 'Move over whitespace', function() {
+        test( 'Move by a space', function() {
+            return vscode.workspace.openTextDocument( path.join( __dirname, '_fixtures', 'camelCase.txt' ) )
+                .then( ( doc ) => {
+                    return vscode.window.showTextDocument( doc );
+                } )
+                .then( textEditor => {
+                    let expected = 'thisIsACamelCaseWord ^itsSuperFun   to	writeIn-CamelCase\n' +
+                        'you could also mix it with12345wordsToSee how it behaves with numbers';
+                    textEditor.selection = new vscode.Selection( 0, 20, 0, 20 );
+
+                    commands.moveRight( textEditor );
+
+                    assert.equal( getContent.withSelection( textEditor ), expected );
+                } );
+        } );
+
+        test( 'Move when space is next', function() {
+            return vscode.workspace.openTextDocument( path.join( __dirname, '_fixtures', 'camelCase.txt' ) )
+                .then( ( doc ) => {
+                    return vscode.window.showTextDocument( doc );
+                } )
+                .then( textEditor => {
+                    let expected = 'thisIsACamelCaseWord^ itsSuperFun   to	writeIn-CamelCase\n' +
+                        'you could also mix it with12345wordsToSee how it behaves with numbers';
+                    textEditor.selection = new vscode.Selection( 0, 19, 0, 19 );
+
+                    commands.moveRight( textEditor );
+
+                    assert.equal( getContent.withSelection( textEditor ), expected );
+                } );
+        } );
+
+        test( 'Move over multiple whitespace', function() {
             return vscode.workspace.openTextDocument( path.join( __dirname, '_fixtures', 'camelCase.txt' ) )
                 .then( ( doc ) => {
                     return vscode.window.showTextDocument( doc );
@@ -504,8 +536,8 @@
             testValue( 2, 'Bac' );
             testValue( 1, '0' );
             testValue( 1, '-' );
-            testValue( 1, ' ' );
             testValue( 1, '' );
+            testValue( 4, ' ' );
         } )
     } )
 } )();

@@ -134,10 +134,20 @@ module.exports = {
 	_movePositionFirstLine( doc, position, right, textAhead ) {
 		let endPos = null,
 			curCharType = this._getCharType( textAhead[ 0 ] || '' ),
-			match = textAhead.search( common.regExpExcludeMapping[ curCharType ] );
+			farAheadCharType = this._getCharType( textAhead[ 1 ] || '' ),
+			match = textAhead.search( common.regExpExcludeMapping[ curCharType ] ),
+			// Some matchings will require adjustment.
+			matchAdjustment = 0;
+
+		if ( right && farAheadCharType !== curCharType &&
+			curCharType !== common.CHAR_TYPE.WHITESPACE && farAheadCharType !== common.CHAR_TYPE.WHITESPACE ) {
+			// Catches a case like: foo^BarBaz.
+			match = textAhead.substr( 1 ).search( common.regExpExcludeMapping[ farAheadCharType ] );
+			matchAdjustment = 1;
+		}
 
 		if ( match !== -1 ) {
-			endPos = position.character + ( match * ( right ? 1 : -1 ) );
+			endPos = position.character + ( match * ( right ? 1 : -1 ) ) + matchAdjustment;
 		}
 
 		return endPos;
