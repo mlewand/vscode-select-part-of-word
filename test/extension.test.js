@@ -141,8 +141,24 @@
                 } )
                 .then( textEditor => {
                     let expected = '		let sel = textEditor.selections[ 0 ],\n' +
-                        '			newPos = this._move^PositionRight( textEditor.document, sel.active )\n';
+                        '			newPos = this._move^PositionRight( textEditor.document, sel.active );\n';
                     textEditor.selection = new vscode.Selection( 1, 30, 1, 30 );
+
+                    commands.moveLeft( textEditor );
+
+                    assert.equal( getContent.withSelection( textEditor ), expected );
+                } );
+        } );
+
+        test( 'Move to whitespace collapsed', function() {
+            return vscode.workspace.openTextDocument( path.join( __dirname, '_fixtures', 'camelCase.txt' ) )
+                .then( ( doc ) => {
+                    return vscode.window.showTextDocument( doc );
+                } )
+                .then( textEditor => {
+                    let expected = 'thisIsACamelCaseWord ^itsSuperFun   to	writeIn-CamelCase\n' +
+                        'you could also mix it with12345wordsToSee how it behaves with numbers';
+                    textEditor.selection = new vscode.Selection( 0, 24, 0, 24 );
 
                     commands.moveLeft( textEditor );
 
