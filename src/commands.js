@@ -105,13 +105,17 @@ module.exports = {
 		for ( [ curLine, textAhead ] of linesGenerator ) {
 			if ( curLine === position.line ) {
 				// First line has some special handling.
+				endPos = this._movePositionFirstLine( doc, position, right, textAhead );
 			} else {
 				let match = textAhead.search( /[^\s]/ );
 
 				if ( match !== -1 ) {
 					endPos = right ? match : textAhead.length - match;
-					break;
 				}
+			}
+
+			if ( endPos !== null ) {
+				break;
 			}
 		}
 
@@ -125,6 +129,12 @@ module.exports = {
 		}
 
 		return new vscode.Position( curLine, endPos );
+	},
+
+	_movePositionFirstLine( doc, position, right, textAhead ) {
+		let endPos = null;
+
+		return endPos;
 	},
 
 	/**
