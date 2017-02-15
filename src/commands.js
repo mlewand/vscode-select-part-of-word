@@ -136,6 +136,8 @@ module.exports = {
 			curCharType = this._getCharType( textAhead[ 0 ] || '' ),
 			farAheadCharType = this._getCharType( textAhead[ 1 ] || '' ),
 			match = textAhead.search( common.regExpExcludeMapping[ curCharType ] ),
+			// Empty textAhead means that the caret is at boundary position.
+			isBoundaryPosiiton = textAhead === '',
 			// Some matchings will require adjustment.
 			matchAdjustment = 0;
 
@@ -148,6 +150,9 @@ module.exports = {
 
 		if ( match !== -1 ) {
 			endPos = position.character + ( match * ( right ? 1 : -1 ) ) + matchAdjustment;
+		} else if ( !isBoundaryPosiiton ) {
+			// No textAhead means that the caret is in boundary position.
+			endPos = right ? doc.lineAt( position.line ).text.length : 0;
 		}
 
 		return endPos;
