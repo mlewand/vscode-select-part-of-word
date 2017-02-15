@@ -132,7 +132,13 @@ module.exports = {
 	},
 
 	_movePositionFirstLine( doc, position, right, textAhead ) {
-		let endPos = null;
+		let endPos = null,
+			curCharType = this._getCharType( textAhead[ 0 ] || '' ),
+			match = textAhead.search( common.regExpExcludeMapping[ curCharType ] );
+
+		if ( match !== -1 ) {
+			endPos = position.character + ( match * ( right ? 1 : -1 ) );
+		}
 
 		return endPos;
 	},
