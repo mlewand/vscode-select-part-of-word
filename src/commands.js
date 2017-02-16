@@ -148,6 +148,12 @@ module.exports = {
 			matchAdjustment = 1;
 		}
 
+		if ( !right && match !== -1 && this._getCharType( textAhead[ match ] ) !== common.CHAR_TYPE.WHITESPACE ) {
+			// Detects case like moving left with thisIsFanc^y, or FOO_BA^R - we want to move  the caret before
+			// uppercased letter.
+			match += 1;
+		}
+
 		if ( match !== -1 ) {
 			endPos = position.character + ( match * ( right ? 1 : -1 ) ) + matchAdjustment;
 		} else if ( !isBoundaryPosiiton ) {
