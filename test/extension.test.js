@@ -252,7 +252,7 @@
                 } )
                 .then( textEditor => {
                     let expected = 'thisIsACamelCaseWord itsSuperFun   to	writeIn-CamelCase\n' +
-                        'you could also mix it with12345wordsToSee how it behaves with^ numbers';
+                        'you could also mix it with12345wordsToSee how it behaves with ^numbers';
                     textEditor.selection = new vscode.Selection( 1, 69, 1, 69 );
 
                     commands.moveLeft( textEditor );
