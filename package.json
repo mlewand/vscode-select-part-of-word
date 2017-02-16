@@ -2,7 +2,7 @@
     "name": "select-part-of-word",
     "displayName": "Select part of word",
     "description": "An extension that allows you to move selection by a word in camel-case string.",
-    "version": "0.0.3",
+    "version": "0.1.0",
     "publisher": "mlewand",
     "engines": {
         "vscode": "^1.5.0"
@@ -18,7 +18,8 @@
     ],
     "main": "./extension",
     "contributes": {
-        "commands": [ {
+        "commands": [
+            {
                 "command": "selectPartOfWord.moveRight",
                 "title": "Move right by a part of word"
             },
@@ -35,7 +36,8 @@
                 "title": "Select word on the left"
             }
         ],
-        "keybindings": [ {
+        "keybindings": [
+            {
                 "command": "selectPartOfWord.moveRight",
                 "key": "ctrl+alt+right"
             },
@@ -65,7 +67,11 @@
         "url": "https://github.com/mlewand/vscode-select-part-of-word/issues"
     },
     "homepage": "https://github.com/mlewand/vscode-select-part-of-word#readme",
-    "keywords": [ "productivity", "keybindings", "selection" ],
+    "keywords": [
+        "productivity",
+        "keybindings",
+        "selection"
+    ],
     "devDependencies": {
         "@types/mocha": "^2.2.32",
         "@types/node": "^6.0.40",
