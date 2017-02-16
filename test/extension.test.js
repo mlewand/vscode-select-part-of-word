@@ -4,9 +4,7 @@
 
     const assert = require( 'assert' ),
         vscode = require( 'vscode' ),
-        myExtension = require( '../extension' ),
         commands = require( '../src/commands' ),
-        Range = vscode.Range,
         path = require( 'path' ),
         getContent = require( 'vscode-test-get-content' );
 
@@ -575,7 +573,7 @@
         test( '_getCharType', function() {
             let testValue = ( expected, valueUsed ) => {
                 assert.strictEqual( commands._getCharType( valueUsed ), expected, valueUsed );
-            }
+            };
 
             testValue( 3, 'a' );
             testValue( 3, 'aBC' );
@@ -585,6 +583,6 @@
             testValue( 1, '-' );
             testValue( 1, '' );
             testValue( 4, ' ' );
-        } )
-    } )
+        } );
+    } );
 } )();

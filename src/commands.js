@@ -1,8 +1,7 @@
 const common = require( './common' ),
 	vscode = require( 'vscode' ),
 	CHAR_TYPE = common.CHAR_TYPE,
-	regExpMapping = common.regExpMapping,
-	regExpExcludeMapping = common.regExpExcludeMapping;
+	regExpMapping = common.regExpMapping;
 
 function reverseString( input ) {
 	return [ ...input ].reverse().join( '' );
@@ -100,7 +99,9 @@ module.exports = {
 	 */
 	_movePosition( doc, position, right ) {
 		let linesGenerator = this._getAheadLines( doc, position, Boolean( right ) ),
-			endPos = null;
+			endPos = null,
+			curLine,
+			textAhead;
 
 		for ( [ curLine, textAhead ] of linesGenerator ) {
 			if ( curLine === position.line ) {
