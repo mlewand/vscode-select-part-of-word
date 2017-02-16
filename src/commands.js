@@ -1,7 +1,6 @@
 const common = require( './common' ),
 	vscode = require( 'vscode' ),
-	CHAR_TYPE = common.CHAR_TYPE,
-	regExpMapping = common.regExpMapping;
+	CHAR_TYPE = common.CHAR_TYPE;
 
 function reverseString( input ) {
 	return [ ...input ].reverse().join( '' );
@@ -220,6 +219,8 @@ module.exports = {
 	 * @returns {Number} A value based on `CHAR_TYPE` members.
 	 */
 	_getCharType( char ) {
+		let regExpMapping = common.regExpMapping;
+
 		char = String( char )[ 0 ] || '';
 
 		for ( let typeValue in regExpMapping ) {
