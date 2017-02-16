@@ -74,5 +74,6 @@
         "typescript": "^2.0.3",
         "vscode": "^1.0.0",
         "vscode-test-get-content": "^2.0.1"
-    }
+    },
+    "license": "MIT"
 }
