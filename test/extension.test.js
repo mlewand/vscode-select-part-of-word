@@ -166,6 +166,21 @@
                 } );
         } );
 
+        test( 'Move before underscore in constant format', function() {
+            return vscode.workspace.openTextDocument( path.join( __dirname, '_fixtures', 'constant.txt' ) )
+                .then( ( doc ) => {
+                    return vscode.window.showTextDocument( doc );
+                } )
+                .then( textEditor => {
+                    let expected = 'THIS_FILE HAS^_SOME_CONSTANT_CONVENTION AND_ITS_FUN';
+                    textEditor.selection = new vscode.Selection( 0, 18, 0, 18 );
+
+                    commands.moveLeft( textEditor );
+
+                    assert.equal( getContent.withSelection( textEditor ), expected );
+                } );
+        } );
+
         test( 'Move within camelCase collapsed', function() {
             return vscode.workspace.openTextDocument( path.join( __dirname, '_fixtures', 'jsCode.txt' ) )
                 .then( ( doc ) => {
