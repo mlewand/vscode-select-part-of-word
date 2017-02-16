@@ -172,7 +172,7 @@
                     return vscode.window.showTextDocument( doc );
                 } )
                 .then( textEditor => {
-                    let expected = 'THIS_FILE HAS^_SOME_CONSTANT_CONVENTION AND_ITS_FUN';
+                    let expected = 'THIS_FILE HAS_^SOME_CONSTANT_CONVENTION AND_ITS_FUN';
                     textEditor.selection = new vscode.Selection( 0, 18, 0, 18 );
 
                     commands.moveLeft( textEditor );
