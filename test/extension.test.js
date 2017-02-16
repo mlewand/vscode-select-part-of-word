@@ -277,6 +277,22 @@
                 } );
         } );
 
+        test( 'Move over numbers', function() {
+            return vscode.workspace.openTextDocument( path.join( __dirname, '_fixtures', 'camelCase.txt' ) )
+                .then( ( doc ) => {
+                    return vscode.window.showTextDocument( doc );
+                } )
+                .then( textEditor => {
+                    let expected = 'thisIsACamelCaseWord itsSuperFun   to	writeIn-CamelCase\n' +
+                        'you could also mix it with^12345wordsToSee how it behaves with numbers';
+                    textEditor.selection = new vscode.Selection( 1, 31, 1, 31 );
+
+                    commands.moveLeft( textEditor );
+
+                    assert.equal( getContent.withSelection( textEditor ), expected );
+                } );
+        } );
+
         test( 'Move over empty lines', function() {
             return vscode.workspace.openTextDocument( path.join( __dirname, '_fixtures', 'whitespaceTest.txt' ) )
                 .then( ( doc ) => {
