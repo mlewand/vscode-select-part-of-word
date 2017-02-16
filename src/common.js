@@ -17,7 +17,7 @@ module.exports = {
 	regExpExcludeMapping: {
 		[ CHAR_TYPE.LOWER_CASE ]: /(?![a-z])./,
 		[ CHAR_TYPE.UPPER_CASE ]: /(?![A-Z])./,
-		[ CHAR_TYPE.OTHER ]: /[a-zA-Z0-9]/,
+		[ CHAR_TYPE.OTHER ]: /[a-zA-Z]/,
 		[ CHAR_TYPE.WHITESPACE ]: /[^\s]/
 	}
 };
