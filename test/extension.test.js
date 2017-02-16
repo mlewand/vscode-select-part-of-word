@@ -59,7 +59,39 @@
                 } );
         } );
 
-        test( 'Move over whitespace', function() {
+        test( 'Move by a space', function() {
+            return vscode.workspace.openTextDocument( path.join( __dirname, '_fixtures', 'camelCase.txt' ) )
+                .then( ( doc ) => {
+                    return vscode.window.showTextDocument( doc );
+                } )
+                .then( textEditor => {
+                    let expected = 'thisIsACamelCaseWord ^itsSuperFun   to	writeIn-CamelCase\n' +
+                        'you could also mix it with12345wordsToSee how it behaves with numbers';
+                    textEditor.selection = new vscode.Selection( 0, 20, 0, 20 );
+
+                    commands.moveRight( textEditor );
+
+                    assert.equal( getContent.withSelection( textEditor ), expected );
+                } );
+        } );
+
+        test( 'Move when space is next', function() {
+            return vscode.workspace.openTextDocument( path.join( __dirname, '_fixtures', 'camelCase.txt' ) )
+                .then( ( doc ) => {
+                    return vscode.window.showTextDocument( doc );
+                } )
+                .then( textEditor => {
+                    let expected = 'thisIsACamelCaseWord^ itsSuperFun   to	writeIn-CamelCase\n' +
+                        'you could also mix it with12345wordsToSee how it behaves with numbers';
+                    textEditor.selection = new vscode.Selection( 0, 19, 0, 19 );
+
+                    commands.moveRight( textEditor );
+
+                    assert.equal( getContent.withSelection( textEditor ), expected );
+                } );
+        } );
+
+        test( 'Move over multiple whitespace', function() {
             return vscode.workspace.openTextDocument( path.join( __dirname, '_fixtures', 'camelCase.txt' ) )
                 .then( ( doc ) => {
                     return vscode.window.showTextDocument( doc );
@@ -134,6 +166,53 @@
                 } );
         } );
 
+        test( 'Move before underscore in constant format', function() {
+            return vscode.workspace.openTextDocument( path.join( __dirname, '_fixtures', 'constant.txt' ) )
+                .then( ( doc ) => {
+                    return vscode.window.showTextDocument( doc );
+                } )
+                .then( textEditor => {
+                    let expected = 'THIS_FILE HAS_^SOME_CONSTANT_CONVENTION AND_ITS_FUN';
+                    textEditor.selection = new vscode.Selection( 0, 18, 0, 18 );
+
+                    commands.moveLeft( textEditor );
+
+                    assert.equal( getContent.withSelection( textEditor ), expected );
+                } );
+        } );
+
+        test( 'Move within camelCase collapsed', function() {
+            return vscode.workspace.openTextDocument( path.join( __dirname, '_fixtures', 'jsCode.txt' ) )
+                .then( ( doc ) => {
+                    return vscode.window.showTextDocument( doc );
+                } )
+                .then( textEditor => {
+                    let expected = '		let sel = textEditor.selections[ 0 ],\n' +
+                        '			newPos = this._move^PositionRight( textEditor.document, sel.active );\n';
+                    textEditor.selection = new vscode.Selection( 1, 30, 1, 30 );
+
+                    commands.moveLeft( textEditor );
+
+                    assert.equal( getContent.withSelection( textEditor ), expected );
+                } );
+        } );
+
+        test( 'Move to whitespace collapsed', function() {
+            return vscode.workspace.openTextDocument( path.join( __dirname, '_fixtures', 'camelCase.txt' ) )
+                .then( ( doc ) => {
+                    return vscode.window.showTextDocument( doc );
+                } )
+                .then( textEditor => {
+                    let expected = 'thisIsACamelCaseWord ^itsSuperFun   to	writeIn-CamelCase\n' +
+                        'you could also mix it with12345wordsToSee how it behaves with numbers';
+                    textEditor.selection = new vscode.Selection( 0, 24, 0, 24 );
+
+                    commands.moveLeft( textEditor );
+
+                    assert.equal( getContent.withSelection( textEditor ), expected );
+                } );
+        } );
+
         test( 'Move from just after capitalized', function() {
             return vscode.workspace.openTextDocument( path.join( __dirname, '_fixtures', 'camelCase.txt' ) )
                 .then( ( doc ) => {
@@ -173,7 +252,7 @@
                 } )
                 .then( textEditor => {
                     let expected = 'thisIsACamelCaseWord itsSuperFun   to	writeIn-CamelCase\n' +
-                        'you could also mix it with12345wordsToSee how it behaves with^ numbers';
+                        'you could also mix it with12345wordsToSee how it behaves with ^numbers';
                     textEditor.selection = new vscode.Selection( 1, 69, 1, 69 );
 
                     commands.moveLeft( textEditor );
@@ -472,8 +551,8 @@
             testValue( 2, 'Bac' );
             testValue( 1, '0' );
             testValue( 1, '-' );
-            testValue( 1, ' ' );
             testValue( 1, '' );
+            testValue( 4, ' ' );
         } )
     } )
 } )();
