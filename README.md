@@ -25,3 +25,9 @@ This extension is fully open source, available at [https://github.com/mlewand/vs
 ## Getting In Touch
 
 You can always ping me at Twitter [@m_lewand](https://twitter.com/m_lewand).
+
+## License
+
+The code is distributed under MIT license.
+
+* Image at `assets/icon.svg` distributed under Creative Commons license, obtained from [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:PEO-bactrian_camel.svg).
