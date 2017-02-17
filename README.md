@@ -18,6 +18,8 @@ Hotkey | Description
 `CTRL+ALT+LEFT` | Move caret to the previous word
 `CTRL+SHIFT+ALT+RIGHT` | Expands selection to the next word
 `CTRL+SHIFT+ALT+LEFT` | Expands selection to the previous word
+`CTRL+ALT+BACKSPACE` | Removes previous word
+`CTRL+ALT+DELETE` (`CTRL+SHIFT+ALT+DELETE` on Windows) | Removes next word
 
 ## Looking For Feedback
 
