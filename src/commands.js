@@ -77,6 +77,20 @@ module.exports = {
 	 * @param {TextEditor} textEditor
 	 */
 	selectLeft( textEditor ) {
+		this._moveCommon( textEditor, false, true );
+	},
+
+
+	/**
+	 * Since all `move*` and `seslect*` methods had a common loop, it has been extracted into this common method.
+	 *
+	 * @private
+	 * @param {TextEditor} textEditor
+	 * @param {Boolean} right Whether to move right or left.
+	 * @param {Boolean} [preserveAnchor=false] Whether to preserve existing selection anchor points. If not every selection
+	 * will become collapsed at position returned by `_movePositionRight` or `_movePositionRight`.
+	 */
+	_moveCommon( textEditor, right, preserveAnchor ) {
 		textEditor = this._getEditor( textEditor );
 
 		let selections = textEditor.selections;
