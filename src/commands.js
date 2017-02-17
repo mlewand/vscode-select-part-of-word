@@ -39,12 +39,15 @@ module.exports = {
 	moveLeft( textEditor ) {
 		textEditor = this._getEditor( textEditor );
 
-		let sel = textEditor.selections[ 0 ],
-			newPos = this._movePositionLeft( textEditor.document, sel.active );
+		let selections = textEditor.selections;
 
-		if ( newPos ) {
-			// Update the selection.
-			textEditor.selection = new vscode.Selection( newPos, newPos );
+		for ( let i = 0; i < selections.length; i++ ) {
+			let newPos = this._movePositionLeft( textEditor.document, selections[ i ].active );
+
+			if ( newPos ) {
+				// Update the selection.
+				selections[ i ] = new vscode.Selection( newPos, newPos );
+			}
 		}
 	},
 
