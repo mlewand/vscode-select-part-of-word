@@ -47,6 +47,21 @@ module.exports = {
 		this._moveCommon( textEditor, false, true );
 	},
 
+	/**
+	 * Expands (or shrinks depending where range's active position is) the selection to the left side of text.
+	 *
+	 * @param {TextEditor} textEditor
+	 */
+	backspace( textEditor, edits ) {
+		this._moveCommon( textEditor, false, true );
+
+		// Now remove each anchor.
+		for ( let sel of textEditor.selections ) {
+			if ( !sel.isEmpty ) {
+				edits.delete( sel );
+			}
+		}
+	},
 
 	/**
 	 * Since all `move*` and `seslect*` methods had a common loop, it has been extracted into this common method.

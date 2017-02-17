@@ -15,7 +15,8 @@
         "onCommand:selectPartOfWord.moveRight",
         "onCommand:selectPartOfWord.moveLeft",
         "onCommand:selectPartOfWord.selectRight",
-        "onCommand:selectPartOfWord.selectLeft"
+        "onCommand:selectPartOfWord.selectLeft",
+        "onCommand:selectPartOfWord.backspace"
     ],
     "main": "./extension",
     "contributes": {
@@ -35,6 +36,10 @@
             {
                 "command": "selectPartOfWord.selectLeft",
                 "title": "Select word on the left"
+            },
+            {
+                "command": "selectPartOfWord.backspace",
+                "title": "Remove previous part of word"
             }
         ],
         "keybindings": [
