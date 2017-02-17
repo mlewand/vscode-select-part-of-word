@@ -121,6 +121,38 @@
                 } );
         } );
 
+        test( 'Move over unicode', function() {
+            return vscode.workspace.openTextDocument( path.join( __dirname, '_fixtures', 'unicode.txt' ) )
+                .then( ( doc ) => {
+                    return vscode.window.showTextDocument( doc );
+                } )
+                .then( textEditor => {
+                    let expected = 'กั¥¼ abcÑñ^𝌀𝌃 𝌑𝍊\n' +
+                        'właściwiePiękneLiterki właściwiePiękneLiterki';
+                    textEditor.selection = new vscode.Selection( 0, 5, 0, 5 );
+
+                    commands.moveRight( textEditor );
+
+                    assert.equal( getContent.withSelection( textEditor ), expected );
+                } );
+        } );
+
+        test( 'Move over unicode polish', function() {
+            return vscode.workspace.openTextDocument( path.join( __dirname, '_fixtures', 'unicode.txt' ) )
+                .then( ( doc ) => {
+                    return vscode.window.showTextDocument( doc );
+                } )
+                .then( textEditor => {
+                    let expected = 'กั¥¼ abcÑñ𝌀𝌃 𝌑𝍊\n' +
+                        'właściwie^PiękneLiterki właściwiePiękneLiterki';
+                    textEditor.selection = new vscode.Selection( 1, 1, 1, 1 );
+
+                    commands.moveRight( textEditor );
+
+                    assert.equal( getContent.withSelection( textEditor ), expected );
+                } );
+        } );
+
         test( 'Move over empty lines', function() {
             return vscode.workspace.openTextDocument( path.join( __dirname, '_fixtures', 'whitespaceTest.txt' ) )
                 .then( ( doc ) => {
@@ -284,6 +316,22 @@
                     let expected = 'thisIsACamelCaseWord itsSuperFun   to	writeIn-CamelCase\n' +
                         'you could also mix it with^12345wordsToSee how it behaves with numbers';
                     textEditor.selection = new vscode.Selection( 1, 31, 1, 31 );
+
+                    commands.moveLeft( textEditor );
+
+                    assert.equal( getContent.withSelection( textEditor ), expected );
+                } );
+        } );
+
+        test( 'Move over unicode', function() {
+            return vscode.workspace.openTextDocument( path.join( __dirname, '_fixtures', 'unicode.txt' ) )
+                .then( ( doc ) => {
+                    return vscode.window.showTextDocument( doc );
+                } )
+                .then( textEditor => {
+                    let expected = 'กั¥¼ abcÑñ𝌀𝌃 𝌑𝍊\n' +
+                        'właściwie^PiękneLiterki właściwiePiękneLiterki';
+                    textEditor.selection = new vscode.Selection( 1, 15, 1, 15 );
 
                     commands.moveLeft( textEditor );
 
@@ -498,7 +546,11 @@
                         vals.push( curLine.value );
                     }
 
-                    assert.deepEqual( vals, [ [ 0, 'cd' ], [ 1, 'AB' ], [ 2, '12' ] ] );
+                    assert.deepEqual( vals, [
+                        [ 0, 'cd' ],
+                        [ 1, 'AB' ],
+                        [ 2, '12' ]
+                    ] );
                 } );
         } );
 
@@ -516,7 +568,11 @@
                         vals.push( curLine.value );
                     }
 
-                    assert.deepEqual( vals, [ [ 0, '' ], [ 1, 'AB' ], [ 2, '12' ] ] );
+                    assert.deepEqual( vals, [
+                        [ 0, '' ],
+                        [ 1, 'AB' ],
+                        [ 2, '12' ]
+                    ] );
                 } );
         } );
 
@@ -549,7 +605,9 @@
                         vals.push( curLine.value );
                     }
 
-                    assert.deepEqual( vals, [ [ 0, 'cba' ] ] );
+                    assert.deepEqual( vals, [
+                        [ 0, 'cba' ]
+                    ] );
                 } );
         } );
 
@@ -576,8 +634,14 @@
             };
 
             testValue( 3, 'a' );
+            testValue( 3, 'ś' );
+            testValue( 3, 'ĉ' );
+            testValue( 3, 'ű' );
             testValue( 3, 'aBC' );
             testValue( 2, 'B' );
+            testValue( 2, 'Ś' );
+            testValue( 2, 'Ĉ' );
+            testValue( 2, 'Ű' );
             testValue( 2, 'Bac' );
             testValue( 1, '0' );
             testValue( 1, '-' );

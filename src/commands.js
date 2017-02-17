@@ -223,6 +223,11 @@ module.exports = {
 
 		char = String( char )[ 0 ] || '';
 
+		// Check for unicode (#1).
+		if ( char.match( this._unicodeRegexp ) ) {
+			return char.toUpperCase() === char ? CHAR_TYPE.UPPER_CASE : CHAR_TYPE.LOWER_CASE;
+		}
+
 		for ( let typeValue in regExpMapping ) {
 			if ( char.match( regExpMapping[ typeValue ] ) ) {
 				return Number( typeValue );
@@ -250,5 +255,7 @@ module.exports = {
 	 */
 	_isTextEditor( editor ) {
 		return editor && editor.document;
-	}
+	},
+
+	_unicodeRegexp: /[\u00C0-\u017F]/
 };
