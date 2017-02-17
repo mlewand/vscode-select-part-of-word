@@ -707,6 +707,94 @@
         } );
     } );
 
+    suite( 'commands.backspace', function() {
+        test( 'Removes text before when collapsed', function() {
+            return vscode.workspace.openTextDocument( path.join( __dirname, '_fixtures', 'camelCase.txt' ) )
+                .then( ( doc ) => {
+                    return vscode.window.showTextDocument( doc );
+                } )
+                .then( textEditor => {
+                    let expected = 'thisIsA^lCaseWord itsSuperFun   to	writeIn-CamelCase\n' +
+                        'you could also mix it with12345wordsToSee how it behaves with numbers';
+                    textEditor.selection = new vscode.Selection( 0, 11, 0, 11 );
+
+                    return vscode.commands.executeCommand( 'selectPartOfWord.backspace' )
+                        .then( () => {
+                            assert.equal( getContent.withSelection( textEditor ), expected );
+                        } )
+                        .then( () => vscode.commands.executeCommand( 'undo' ) );
+                } );
+        } );
+
+        test( 'Registers undo snapshot', function() {
+            return vscode.workspace.openTextDocument( {
+                    language: 'text'
+                } )
+                .then( doc => vscode.window.showTextDocument( doc ) )
+                .then( textEditor => {
+
+                    let expected = 'thisIsA{Came]lCaseWord itsSuperFun   to	writeIn-CamelCase';
+
+
+                    let editBuilder = ( edit ) => {
+                        edit.insert( new vscode.Position( 0, 0 ), 'thisIsACamelCaseWord itsSuperFun   to	writeIn-CamelCase' );
+                    };
+
+                    return textEditor.edit( editBuilder )
+                        .then( () => {
+                            textEditor.selection = new vscode.Selection( 0, 11, 0, 11 );
+                            return vscode.commands.executeCommand( 'selectPartOfWord.backspace' );
+                        } )
+                        .then( () => vscode.commands.executeCommand( 'undo' ) )
+                        .then( () => assert.equal( getContent.withSelection( textEditor ), expected ) );
+                } );
+        } );
+    } );
+
+    suite( 'commands.delete', function() {
+        test( 'Removes text after when collapsed', function() {
+            return vscode.workspace.openTextDocument( path.join( __dirname, '_fixtures', 'camelCase.txt' ) )
+                .then( ( doc ) => {
+                    return vscode.window.showTextDocument( doc );
+                } )
+                .then( textEditor => {
+                    let expected = 'thisIsACamel^Word itsSuperFun   to	writeIn-CamelCase\n' +
+                        'you could also mix it with12345wordsToSee how it behaves with numbers';
+                    textEditor.selection = new vscode.Selection( 0, 12, 0, 12 );
+
+                    return vscode.commands.executeCommand( 'selectPartOfWord.delete' )
+                        .then( () => {
+                            assert.equal( getContent.withSelection( textEditor ), expected );
+                        } );
+                } )
+                .then( () => vscode.commands.executeCommand( 'undo' ) );
+        } );
+
+        test( 'Registers undo snapshot', function() {
+            return vscode.workspace.openTextDocument( {
+                    language: 'text'
+                } )
+                .then( doc => vscode.window.showTextDocument( doc ) )
+                .then( textEditor => {
+
+                    let expected = 'thisIsACamel[Case}Word itsSuperFun   to	writeIn-CamelCase';
+
+
+                    let editBuilder = ( edit ) => {
+                        edit.insert( new vscode.Position( 0, 0 ), 'thisIsACamelCaseWord itsSuperFun   to	writeIn-CamelCase' );
+                    };
+
+                    return textEditor.edit( editBuilder )
+                        .then( () => {
+                            textEditor.selection = new vscode.Selection( 0, 12, 0, 12 );
+                            return vscode.commands.executeCommand( 'selectPartOfWord.delete' );
+                        } )
+                        .then( () => vscode.commands.executeCommand( 'undo' ) )
+                        .then( () => assert.equal( getContent.withSelection( textEditor ), expected ) );
+                } );
+        } );
+    } );
+
     suite( '_getCharType', function() {
         test( '_getCharType', function() {
             let testValue = ( expected, valueUsed ) => {
