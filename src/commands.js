@@ -60,23 +60,16 @@ module.exports = {
 	_moveCommon( textEditor, right, preserveAnchor ) {
 		textEditor = this._getEditor( textEditor );
 
-		let selections = textEditor.selections,
-			moveMethod = right ? this._movePositionRight : this._movePositionLeft,
-			newSelections = [];
+		let moveMethod = right ? this._movePositionRight : this._movePositionLeft;
 
-		for ( let i = 0; i < selections.length; i++ ) {
-			let newPos = moveMethod.call( this, textEditor.document, selections[ i ].active );
+		// Interestingly enough we need to override textEditor.selecitons. Calling push or anything
+		// won't change the selection (#19).
+		textEditor.selections = textEditor.selections.map( sel => {
+			let newPos = moveMethod.call( this, textEditor.document, sel.active );
 
-			if ( newPos ) {
-				// Update the selection.
-
-				// Ohh, interesting, actually updating multiple selections doesn't seem to work with the API exposed by
-				// VSCode. As a fallback: update the first selection with what seems to be working, (#19)
-				newSelections.push( new vscode.Selection( preserveAnchor ? selections[ i ].anchor : newPos, newPos ) );
-			}
-		}
-
-		textEditor.selections = newSelections;
+			// Update the selection if needed.
+			return newPos ? new vscode.Selection( preserveAnchor ? sel.anchor : newPos, newPos ) : sel;
+		}, this );
 	},
 
 	_movePositionRight( doc, position ) {
