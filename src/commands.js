@@ -55,13 +55,14 @@ module.exports = {
 	selectRight( textEditor ) {
 		textEditor = this._getEditor( textEditor );
 
-		let sel = textEditor.selections[ 0 ],
-			newPos = this._movePositionRight( textEditor.document, sel.active ),
-			newSel = new vscode.Selection( sel.anchor, newPos );
+		let selections = textEditor.selections;
 
-		if ( newSel ) {
-			// Update the selection.
-			textEditor.selection = newSel;
+		for ( let i = 0; i < selections.length; i++ ) {
+			let newPos = this._movePositionRight( textEditor.document, selections[ i ].active );
+
+			if ( newPos ) {
+				selections[ i ] = new vscode.Selection( selections[ i ].anchor, newPos );
+			}
 		}
 	},
 
