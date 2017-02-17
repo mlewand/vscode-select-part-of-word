@@ -48,9 +48,10 @@ module.exports = {
 	},
 
 	/**
-	 * Expands (or shrinks depending where range's active position is) the selection to the left side of text.
+	 * Deletes part of the word before the caret.
 	 *
 	 * @param {TextEditor} textEditor
+	 * @param {TextEditorEdit} edits
 	 */
 	backspace( textEditor, edits ) {
 		this._moveCommon( textEditor, false, true );
