@@ -11,9 +11,6 @@
         "Other"
     ],
     "icon": "assets/icon.svg",
-    "galleryBanner": {
-        "theme": "dark"
-    },
     "activationEvents": [
         "onCommand:selectPartOfWord.moveRight",
         "onCommand:selectPartOfWord.moveLeft",
