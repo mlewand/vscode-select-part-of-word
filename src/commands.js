@@ -61,16 +61,22 @@ module.exports = {
 		textEditor = this._getEditor( textEditor );
 
 		let selections = textEditor.selections,
-			moveMethod = right ? this._movePositionRight : this._movePositionLeft;
+			moveMethod = right ? this._movePositionRight : this._movePositionLeft,
+			newSelections = [];
 
 		for ( let i = 0; i < selections.length; i++ ) {
 			let newPos = moveMethod.call( this, textEditor.document, selections[ i ].active );
 
 			if ( newPos ) {
 				// Update the selection.
-				selections[ i ] = new vscode.Selection( preserveAnchor ? selections[ i ].anchor : newPos, newPos );
+
+				// Ohh, interesting, actually updating multiple selections doesn't seem to work with the API exposed by
+				// VSCode. As a fallback: update the first selection with what seems to be working, (#19)
+				newSelections.push( new vscode.Selection( preserveAnchor ? selections[ i ].anchor : newPos, newPos ) );
 			}
 		}
+
+		textEditor.selections = newSelections;
 	},
 
 	_movePositionRight( doc, position ) {
