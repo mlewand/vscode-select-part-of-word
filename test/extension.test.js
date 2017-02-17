@@ -718,11 +718,27 @@
                         'you could also mix it with12345wordsToSee how it behaves with numbers';
                     textEditor.selection = new vscode.Selection( 0, 11, 0, 11 );
 
-                    // commands.selectLeft( textEditor );
-
                     return vscode.commands.executeCommand( 'selectPartOfWord.backspace' )
                         .then( () => {
+                            assert.equal( getContent.withSelection( textEditor ), expected );
+                        } );
+                } );
+        } );
+    } );
 
+    suite( 'commands.delete', function() {
+        test( 'Removes text after when collapsed', function() {
+            return vscode.workspace.openTextDocument( path.join( __dirname, '_fixtures', 'camelCase.txt' ) )
+                .then( ( doc ) => {
+                    return vscode.window.showTextDocument( doc );
+                } )
+                .then( textEditor => {
+                    let expected = 'thisIsACamel^Word itsSuperFun   to	writeIn-CamelCase\n' +
+                        'you could also mix it with12345wordsToSee how it behaves with numbers';
+                    textEditor.selection = new vscode.Selection( 0, 12, 0, 12 );
+
+                    return vscode.commands.executeCommand( 'selectPartOfWord.delete' )
+                        .then( () => {
                             assert.equal( getContent.withSelection( textEditor ), expected );
                         } );
                 } );
