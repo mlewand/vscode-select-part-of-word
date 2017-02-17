@@ -707,6 +707,28 @@
         } );
     } );
 
+    suite( 'commands.backspace', function() {
+        test( 'Removes text before when collapsed', function() {
+            return vscode.workspace.openTextDocument( path.join( __dirname, '_fixtures', 'camelCase.txt' ) )
+                .then( ( doc ) => {
+                    return vscode.window.showTextDocument( doc );
+                } )
+                .then( textEditor => {
+                    let expected = 'thisIsA^lCaseWord itsSuperFun   to	writeIn-CamelCase\n' +
+                        'you could also mix it with12345wordsToSee how it behaves with numbers';
+                    textEditor.selection = new vscode.Selection( 0, 11, 0, 11 );
+
+                    // commands.selectLeft( textEditor );
+
+                    return vscode.commands.executeCommand( 'selectPartOfWord.backspace' )
+                        .then( () => {
+
+                            assert.equal( getContent.withSelection( textEditor ), expected );
+                        } );
+                } );
+        } );
+    } );
+
     suite( '_getCharType', function() {
         test( '_getCharType', function() {
             let testValue = ( expected, valueUsed ) => {
