@@ -63,6 +63,22 @@ module.exports = {
 			}
 		}
 	},
+	/**
+	 * Deletes part of the word ahead from the caret.
+	 *
+	 * @param {TextEditor} textEditor
+	 * @param {TextEditorEdit} edits
+	 */
+	delete( textEditor, edits ) {
+		this._moveCommon( textEditor, true, true );
+
+		// Now remove each anchor.
+		for ( let sel of textEditor.selections ) {
+			if ( !sel.isEmpty ) {
+				edits.delete( sel );
+			}
+		}
+	},
 
 	/**
 	 * Since all `move*` and `seslect*` methods had a common loop, it has been extracted into this common method.

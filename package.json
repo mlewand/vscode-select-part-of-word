@@ -5,7 +5,7 @@
     "version": "0.1.3",
     "publisher": "mlewand",
     "engines": {
-        "vscode": "^1.5.0"
+        "vscode": "^1.9.0"
     },
     "categories": [
         "Other"
@@ -16,6 +16,7 @@
         "onCommand:selectPartOfWord.moveLeft",
         "onCommand:selectPartOfWord.selectRight",
         "onCommand:selectPartOfWord.selectLeft",
+        "onCommand:selectPartOfWord.delete",
         "onCommand:selectPartOfWord.backspace"
     ],
     "main": "./extension",
@@ -40,6 +41,10 @@
             {
                 "command": "selectPartOfWord.backspace",
                 "title": "Remove previous part of word"
+            },
+            {
+                "command": "selectPartOfWord.delete",
+                "title": "Delete part of word"
             }
         ],
         "keybindings": [
@@ -58,6 +63,14 @@
             {
                 "command": "selectPartOfWord.selectLeft",
                 "key": "ctrl+alt+shift+left"
+            },
+            {
+                "command": "selectPartOfWord.backspace",
+                "key": "ctrl+alt+backspace"
+            },
+            {
+                "command": "selectPartOfWord.delete",
+                "key": "ctrl+alt+delete"
             }
         ]
     },
