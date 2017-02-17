@@ -70,7 +70,8 @@
             },
             {
                 "command": "selectPartOfWord.delete",
-                "key": "ctrl+alt+delete"
+                "key": "ctrl+alt+delete",
+                "win": "ctrl+alt+shift+delete"
             }
         ]
     },
