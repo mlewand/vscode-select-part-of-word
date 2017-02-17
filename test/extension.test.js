@@ -433,6 +433,26 @@
                     assert.equal( getContent.withSelection( textEditor ), expected );
                 } );
         } );
+
+        test( 'Supports multiple selections', function() {
+            return vscode.workspace.openTextDocument( path.join( __dirname, '_fixtures', 'camelCase.txt' ) )
+                .then( ( doc ) => {
+                    return vscode.window.showTextDocument( doc );
+                } )
+                .then( textEditor => {
+                    let expected = '^thisIsACamel^CaseWord itsSuperFun   to	writeIn-CamelCase\n' +
+                        'you^ could also mix it with12345wordsToSee how it behaves with numbers';
+                    textEditor.selections = [
+                        new vscode.Selection( 0, 0, 0, 0 ),
+                        new vscode.Selection( 0, 14, 0, 14 ),
+                        new vscode.Selection( 1, 4, 1, 4 )
+                    ];
+
+                    commands.moveLeft( textEditor );
+
+                    assert.equal( getContent.withSelection( textEditor ), expected );
+                } );
+        } );
     } );
 
     suite( 'commands.selectRight', function() {
