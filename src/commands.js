@@ -15,18 +15,7 @@ module.exports = {
 	 * @param {TextEditor} textEditor
 	 */
 	moveRight( textEditor ) {
-		textEditor = this._getEditor( textEditor );
-
-		let selections = textEditor.selections;
-
-		for ( let i = 0; i < selections.length; i++ ) {
-			let newPos = this._movePositionRight( textEditor.document, selections[ i ].active );
-
-			if ( newPos ) {
-				// Update the selection.
-				selections[ i ] = new vscode.Selection( newPos, newPos );
-			}
-		}
+		this._moveCommon( textEditor, true, false );
 	},
 
 	/**
@@ -37,18 +26,7 @@ module.exports = {
 	 * @param {TextEditor} textEditor
 	 */
 	moveLeft( textEditor ) {
-		textEditor = this._getEditor( textEditor );
-
-		let selections = textEditor.selections;
-
-		for ( let i = 0; i < selections.length; i++ ) {
-			let newPos = this._movePositionLeft( textEditor.document, selections[ i ].active );
-
-			if ( newPos ) {
-				// Update the selection.
-				selections[ i ] = new vscode.Selection( newPos, newPos );
-			}
-		}
+		this._moveCommon( textEditor, false, false );
 	},
 
 	/**
@@ -57,18 +35,7 @@ module.exports = {
 	 * @param {TextEditor} textEditor
 	 */
 	selectRight( textEditor ) {
-		textEditor = this._getEditor( textEditor );
-
-		let selections = textEditor.selections;
-
-		for ( let i = 0; i < selections.length; i++ ) {
-			let newPos = this._movePositionRight( textEditor.document, selections[ i ].active );
-
-			if ( newPos ) {
-				// Update the selection.
-				selections[ i ] = new vscode.Selection( selections[ i ].anchor, newPos );
-			}
-		}
+		this._moveCommon( textEditor, true, true );
 	},
 
 	/**
@@ -93,14 +60,15 @@ module.exports = {
 	_moveCommon( textEditor, right, preserveAnchor ) {
 		textEditor = this._getEditor( textEditor );
 
-		let selections = textEditor.selections;
+		let selections = textEditor.selections,
+			moveMethod = right ? this._movePositionRight : this._movePositionLeft;
 
 		for ( let i = 0; i < selections.length; i++ ) {
-			let newPos = this._movePositionLeft( textEditor.document, selections[ i ].active );
+			let newPos = moveMethod.call( this, textEditor.document, selections[ i ].active );
 
 			if ( newPos ) {
 				// Update the selection.
-				selections[ i ] = new vscode.Selection( selections[ i ].anchor, newPos );
+				selections[ i ] = new vscode.Selection( preserveAnchor ? selections[ i ].anchor : newPos, newPos );
 			}
 		}
 	},
