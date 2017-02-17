@@ -5,7 +5,12 @@ An extension that allows you to move selection by a word in camel-case string. T
 
 ![Demo](assets/demo.gif)
 
-## Default Hotkeys
+## Features
+
+* Support for unicode characters.
+* Support for multiple selections.
+
+### Default Hotkeys
 
 Hotkey | Description
 ---|---
@@ -18,11 +23,11 @@ Hotkey | Description
 
 Please note that this extension is in rather early stage of development.
 
-## Source Code
+### Source Code
 
 This extension is fully open source, available at [https://github.com/mlewand/vscode-select-part-of-word](https://github.com/mlewand/vscode-select-part-of-word).
 
-## Getting In Touch
+### Getting In Touch
 
 You can always ping me at Twitter [@m_lewand](https://twitter.com/m_lewand).
 
