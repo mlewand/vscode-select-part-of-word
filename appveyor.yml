@@ -1,12 +1,11 @@
 
 environment:
-  ELECTRON_RUN_AS_NODE: 1
-  VSCODE_BUILD_VERBOSE: true
+  ELECTRON_NO_ATTACH_CONSOLE: 1
 
 install:
-  - ps: Install-Product node 6.8.1 x64
+  - ps: Install-Product node 6.6.0 x64
   - npm install -g npm --silent
-  - npm install
+  - npm install --silent
 
 platform:
   - x86
