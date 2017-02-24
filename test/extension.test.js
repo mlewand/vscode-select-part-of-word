@@ -5,6 +5,7 @@
     const assert = require( 'assert' ),
         vscode = require( 'vscode' ),
         commands = require( '../src/commands' ),
+        common = require( '../src/common' ),
         path = require( 'path' ),
         getContent = require( 'vscode-test-get-content' );
 
@@ -798,23 +799,24 @@
     suite( '_getCharType', function() {
         test( '_getCharType', function() {
             let testValue = ( expected, valueUsed ) => {
-                assert.strictEqual( commands._getCharType( valueUsed ), expected, valueUsed );
-            };
+                    assert.strictEqual( commands._getCharType( valueUsed ), expected, valueUsed );
+                },
+                CHAR_TYPE = common.CHAR_TYPE;
 
-            testValue( 3, 'a' );
-            testValue( 3, 'ś' );
-            testValue( 3, 'ĉ' );
-            testValue( 3, 'ű' );
-            testValue( 3, 'aBC' );
-            testValue( 2, 'B' );
-            testValue( 2, 'Ś' );
-            testValue( 2, 'Ĉ' );
-            testValue( 2, 'Ű' );
-            testValue( 2, 'Bac' );
-            testValue( 1, '0' );
-            testValue( 1, '-' );
-            testValue( 1, '' );
-            testValue( 4, ' ' );
+            testValue( CHAR_TYPE.LOWER_CASE, 'a' );
+            testValue( CHAR_TYPE.LOWER_CASE, 'ś' );
+            testValue( CHAR_TYPE.LOWER_CASE, 'ĉ' );
+            testValue( CHAR_TYPE.LOWER_CASE, 'ű' );
+            testValue( CHAR_TYPE.LOWER_CASE, 'aBC' );
+            testValue( CHAR_TYPE.UPPER_CASE, 'B' );
+            testValue( CHAR_TYPE.UPPER_CASE, 'Ś' );
+            testValue( CHAR_TYPE.UPPER_CASE, 'Ĉ' );
+            testValue( CHAR_TYPE.UPPER_CASE, 'Ű' );
+            testValue( CHAR_TYPE.UPPER_CASE, 'Bac' );
+            testValue( CHAR_TYPE.OTHER, '0' );
+            testValue( CHAR_TYPE.OTHER, '-' );
+            testValue( CHAR_TYPE.OTHER, '' );
+            testValue( CHAR_TYPE.WHITESPACE, ' ' );
         } );
     } );
 } )();
