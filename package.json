@@ -1,105 +1,106 @@
 {
-    "name": "select-part-of-word",
-    "displayName": "Select part of word",
-    "description": "An extension that allows you to move selection by a word in camel-case string.",
-    "version": "0.2.0",
-    "publisher": "mlewand",
-    "engines": {
-        "vscode": "^1.9.0"
-    },
-    "categories": [
-        "Other"
+  "name": "select-part-of-word",
+  "displayName": "Select part of word",
+  "description": "An extension that allows you to move selection by a word in camel-case string.",
+  "version": "0.2.0",
+  "publisher": "mlewand",
+  "engines": {
+    "vscode": "^1.9.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "icon": "assets/icon.svg",
+  "activationEvents": [
+    "onCommand:selectPartOfWord.moveRight",
+    "onCommand:selectPartOfWord.moveLeft",
+    "onCommand:selectPartOfWord.selectRight",
+    "onCommand:selectPartOfWord.selectLeft",
+    "onCommand:selectPartOfWord.delete",
+    "onCommand:selectPartOfWord.backspace"
+  ],
+  "main": "./extension",
+  "contributes": {
+    "commands": [
+      {
+        "command": "selectPartOfWord.moveRight",
+        "title": "Move right by a part of word"
+      },
+      {
+        "command": "selectPartOfWord.moveLeft",
+        "title": "Move left by a part of word"
+      },
+      {
+        "command": "selectPartOfWord.selectRight",
+        "title": "Select word on the right"
+      },
+      {
+        "command": "selectPartOfWord.selectLeft",
+        "title": "Select word on the left"
+      },
+      {
+        "command": "selectPartOfWord.backspace",
+        "title": "Remove previous part of word"
+      },
+      {
+        "command": "selectPartOfWord.delete",
+        "title": "Delete part of word"
+      }
     ],
-    "icon": "assets/icon.svg",
-    "activationEvents": [
-        "onCommand:selectPartOfWord.moveRight",
-        "onCommand:selectPartOfWord.moveLeft",
-        "onCommand:selectPartOfWord.selectRight",
-        "onCommand:selectPartOfWord.selectLeft",
-        "onCommand:selectPartOfWord.delete",
-        "onCommand:selectPartOfWord.backspace"
-    ],
-    "main": "./extension",
-    "contributes": {
-        "commands": [
-            {
-                "command": "selectPartOfWord.moveRight",
-                "title": "Move right by a part of word"
-            },
-            {
-                "command": "selectPartOfWord.moveLeft",
-                "title": "Move left by a part of word"
-            },
-            {
-                "command": "selectPartOfWord.selectRight",
-                "title": "Select word on the right"
-            },
-            {
-                "command": "selectPartOfWord.selectLeft",
-                "title": "Select word on the left"
-            },
-            {
-                "command": "selectPartOfWord.backspace",
-                "title": "Remove previous part of word"
-            },
-            {
-                "command": "selectPartOfWord.delete",
-                "title": "Delete part of word"
-            }
-        ],
-        "keybindings": [
-            {
-                "command": "selectPartOfWord.moveRight",
-                "key": "ctrl+alt+right"
-            },
-            {
-                "command": "selectPartOfWord.moveLeft",
-                "key": "ctrl+alt+left"
-            },
-            {
-                "command": "selectPartOfWord.selectRight",
-                "key": "ctrl+alt+shift+right"
-            },
-            {
-                "command": "selectPartOfWord.selectLeft",
-                "key": "ctrl+alt+shift+left"
-            },
-            {
-                "command": "selectPartOfWord.backspace",
-                "key": "ctrl+alt+backspace"
-            },
-            {
-                "command": "selectPartOfWord.delete",
-                "key": "ctrl+alt+delete",
-                "win": "ctrl+alt+shift+delete"
-            }
-        ]
-    },
-    "scripts": {
-        "postinstall": "node ./node_modules/vscode/bin/install",
-        "test": "node ./node_modules/vscode/bin/test"
-    },
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/mlewand/vscode-select-part-of-word.git"
-    },
-    "bugs": {
-        "url": "https://github.com/mlewand/vscode-select-part-of-word/issues"
-    },
-    "homepage": "https://github.com/mlewand/vscode-select-part-of-word#readme",
-    "keywords": [
-        "productivity",
-        "keybindings",
-        "selection"
-    ],
-    "devDependencies": {
-        "@types/mocha": "^2.2.32",
-        "@types/node": "^6.0.40",
-        "eslint": "^3.6.0",
-        "mocha": "^2.3.3",
-        "typescript": "^2.0.3",
-        "vscode": "^1.0.0",
-        "vscode-test-get-content": "^2.0.1"
-    },
-    "license": "MIT"
+    "keybindings": [
+      {
+        "command": "selectPartOfWord.moveRight",
+        "key": "ctrl+alt+right"
+      },
+      {
+        "command": "selectPartOfWord.moveLeft",
+        "key": "ctrl+alt+left"
+      },
+      {
+        "command": "selectPartOfWord.selectRight",
+        "key": "ctrl+alt+shift+right"
+      },
+      {
+        "command": "selectPartOfWord.selectLeft",
+        "key": "ctrl+alt+shift+left"
+      },
+      {
+        "command": "selectPartOfWord.backspace",
+        "key": "ctrl+alt+backspace"
+      },
+      {
+        "command": "selectPartOfWord.delete",
+        "key": "ctrl+alt+delete",
+        "win": "ctrl+alt+shift+delete"
+      }
+    ]
+  },
+  "scripts": {
+    "postinstall": "node ./node_modules/vscode/bin/install",
+    "test": "node ./node_modules/vscode/bin/test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mlewand/vscode-select-part-of-word.git"
+  },
+  "bugs": {
+    "url": "https://github.com/mlewand/vscode-select-part-of-word/issues"
+  },
+  "homepage": "https://github.com/mlewand/vscode-select-part-of-word#readme",
+  "keywords": [
+    "productivity",
+    "keybindings",
+    "selection"
+  ],
+  "devDependencies": {
+    "@types/mocha": "^2.2.32",
+    "@types/node": "^6.0.40",
+    "eslint": "^3.6.0",
+    "mocha": "^2.3.3",
+    "typescript": "^2.0.3",
+    "vscode": "^1.0.0",
+    "vscode-test-content": "^1.0.0",
+    "vscode-test-get-content": "^2.0.1"
+  },
+  "license": "MIT"
 }

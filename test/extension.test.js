@@ -5,8 +5,10 @@
     const assert = require( 'assert' ),
         vscode = require( 'vscode' ),
         commands = require( '../src/commands' ),
+        common = require( '../src/common' ),
         path = require( 'path' ),
-        getContent = require( 'vscode-test-get-content' );
+        getContent = require( 'vscode-test-get-content' ),
+        vscodeTestContent = require( 'vscode-test-content' );
 
     suite( 'commands.moveRight', function() {
         test( 'Move within same text case collapsed', function() {
@@ -106,15 +108,13 @@
         } );
 
         test( 'Move over numbers', function() {
-            return vscode.workspace.openTextDocument( path.join( __dirname, '_fixtures', 'camelCase.txt' ) )
-                .then( ( doc ) => {
-                    return vscode.window.showTextDocument( doc );
-                } )
-                .then( textEditor => {
-                    let expected = 'thisIsACamelCaseWord itsSuperFun   to	writeIn-CamelCase\n' +
-                        'you could also mix it with12345^wordsToSee how it behaves with numbers';
-                    textEditor.selection = new vscode.Selection( 1, 26, 1, 26 );
+            let input = 'thisIsACamelCaseWord itsSuperFun   to	writeIn-CamelCase\n' +
+                    'you could also mix it with^12345wordsToSee how it behaves with numbers',
+                expected = 'thisIsACamelCaseWord itsSuperFun   to	writeIn-CamelCase\n' +
+                    'you could also mix it with12345^wordsToSee how it behaves with numbers';
 
+            return vscodeTestContent.setWithSelection( input )
+                .then( textEditor => {
                     commands.moveRight( textEditor );
 
                     assert.equal( getContent.withSelection( textEditor ), expected );
@@ -328,15 +328,26 @@
         } );
 
         test( 'Move over numbers', function() {
-            return vscode.workspace.openTextDocument( path.join( __dirname, '_fixtures', 'camelCase.txt' ) )
-                .then( ( doc ) => {
-                    return vscode.window.showTextDocument( doc );
-                } )
-                .then( textEditor => {
-                    let expected = 'thisIsACamelCaseWord itsSuperFun   to	writeIn-CamelCase\n' +
-                        'you could also mix it with^12345wordsToSee how it behaves with numbers';
-                    textEditor.selection = new vscode.Selection( 1, 31, 1, 31 );
+            let input = 'thisIsACamelCaseWord itsSuperFun   to	writeIn-CamelCase\n' +
+                    'you could also mix it with12345^wordsToSee how it behaves with numbers',
+                expected = 'thisIsACamelCaseWord itsSuperFun   to	writeIn-CamelCase\n' +
+                    'you could also mix it with^12345wordsToSee how it behaves with numbers';
 
+            return vscodeTestContent.setWithSelection( input )
+                .then( textEditor => {
+                    commands.moveLeft( textEditor );
+
+                    assert.equal( getContent.withSelection( textEditor ), expected );
+                } );
+        } );
+
+        test( 'Move over numbers edge case', function() {
+            let input = 'aa 123.123 123.456.^789',
+                // Ideally I'd like it to move to 'aa 123.123 123.^456.789'.
+                expected = 'aa 123.123 123.456^.789';
+
+            return vscodeTestContent.setWithSelection( input )
+                .then( textEditor => {
                     commands.moveLeft( textEditor );
 
                     assert.equal( getContent.withSelection( textEditor ), expected );
@@ -798,23 +809,25 @@
     suite( '_getCharType', function() {
         test( '_getCharType', function() {
             let testValue = ( expected, valueUsed ) => {
-                assert.strictEqual( commands._getCharType( valueUsed ), expected, valueUsed );
-            };
+                    assert.strictEqual( commands._getCharType( valueUsed ), expected, valueUsed );
+                },
+                CHAR_TYPE = common.CHAR_TYPE;
 
-            testValue( 3, 'a' );
-            testValue( 3, 'ś' );
-            testValue( 3, 'ĉ' );
-            testValue( 3, 'ű' );
-            testValue( 3, 'aBC' );
-            testValue( 2, 'B' );
-            testValue( 2, 'Ś' );
-            testValue( 2, 'Ĉ' );
-            testValue( 2, 'Ű' );
-            testValue( 2, 'Bac' );
-            testValue( 1, '0' );
-            testValue( 1, '-' );
-            testValue( 1, '' );
-            testValue( 4, ' ' );
+            testValue( CHAR_TYPE.LOWER_CASE, 'a' );
+            testValue( CHAR_TYPE.LOWER_CASE, 'ś' );
+            testValue( CHAR_TYPE.LOWER_CASE, 'ĉ' );
+            testValue( CHAR_TYPE.LOWER_CASE, 'ű' );
+            testValue( CHAR_TYPE.LOWER_CASE, 'aBC' );
+            testValue( CHAR_TYPE.UPPER_CASE, 'B' );
+            testValue( CHAR_TYPE.UPPER_CASE, 'Ś' );
+            testValue( CHAR_TYPE.UPPER_CASE, 'Ĉ' );
+            testValue( CHAR_TYPE.UPPER_CASE, 'Ű' );
+            testValue( CHAR_TYPE.UPPER_CASE, 'Bac' );
+            testValue( CHAR_TYPE.NUMBER, '0' );
+            testValue( CHAR_TYPE.NUMBER, '8' );
+            testValue( CHAR_TYPE.OTHER, '-' );
+            testValue( CHAR_TYPE.OTHER, '' );
+            testValue( CHAR_TYPE.WHITESPACE, ' ' );
         } );
     } );
 } )();
