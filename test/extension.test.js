@@ -370,10 +370,11 @@
                 } );
         } );
 
-        test.only( 'Move over unicode mixed with nonalpha chars', function() {
+        test( 'Move over unicode mixed with nonalpha chars', function() {
             let input = 'aa śśćęęę.ęęść óóóÓÓÓóó.^ęęężźźź',
-                expected = 'aa śśćęęę.ęęść ^óóóÓÓÓóó.ęęężźźź';
-            return vscodeTestContent.setWithSelection( 'aa śśćęęę.ęęść óóóÓÓÓóó.^ęęężźźź' )
+                expected = 'aa śśćęęę.ęęść óóóÓÓÓóó^.ęęężźźź';
+
+            return vscodeTestContent.setWithSelection( input )
                 .then( editor => {
                     commands.moveLeft( editor );
                     assert.equal( getContent.withSelection( editor ), expected );
