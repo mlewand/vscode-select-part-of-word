@@ -12,3 +12,7 @@ All notable changes to the "Select part of word" extension will be documented in
 ### Changed
 
 - [#20](https://github.com/mlewand/vscode-select-part-of-word/issues/20) - Numbers are now threated as a separate character group.
+
+### Fixed
+
+- [#23](https://github.com/mlewand/vscode-select-part-of-word/issues/23) - Fixed a buggy behavior when going though unicode chars mixed with non-alphanum chars.
