@@ -1,6 +1,8 @@
 
 # Select Part Of Word
 
+[![Build status](https://ci.appveyor.com/api/projects/status/61wfqa6ostym63yw?svg=true&passingText=master%20%E2%9C%93)](https://ci.appveyor.com/project/mlewand-travis/vscode-select-part-of-word)
+
 An extension that allows you to move selection by a word in camel-case string. This comes especially handy if you want to fix a typo in the middle of the variable, or just reword a part of it.
 
 ![Demo](assets/demo.gif)
