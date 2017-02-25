@@ -341,6 +341,19 @@
                 } );
         } );
 
+        test( 'Move over numbers edge case', function() {
+            let input = 'aa 123.123 123.456.^789',
+                // Ideally I'd like it to move to 'aa 123.123 123.^456.789'.
+                expected = 'aa 123.123 123.456^.789';
+
+            return vscodeTestContent.setWithSelection( input )
+                .then( textEditor => {
+                    commands.moveLeft( textEditor );
+
+                    assert.equal( getContent.withSelection( textEditor ), expected );
+                } );
+        } );
+
         test( 'Move over unicode', function() {
             return vscode.workspace.openTextDocument( path.join( __dirname, '_fixtures', 'unicode.txt' ) )
                 .then( ( doc ) => {

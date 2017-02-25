@@ -20,7 +20,7 @@ module.exports = {
 		[ CHAR_TYPE.LOWER_CASE ]: /(?![a-z\u00C0-\u017F])./,
 		[ CHAR_TYPE.UPPER_CASE ]: /(?![A-Z\u00C0-\u017F])./,
 		[ CHAR_TYPE.NUMBER ]: /(?![0-9])./,
-		[ CHAR_TYPE.OTHER ]: /[a-zA-Z]/,
+		[ CHAR_TYPE.OTHER ]: /[a-zA-Z0-9]/,
 		[ CHAR_TYPE.WHITESPACE ]: /[^\s]/
 	}
 };
