@@ -2,6 +2,8 @@
 
 All notable changes to the "Select part of word" extension will be documented in this file.
 
+## [Unreleased]
+
 ## 1.0.0
 
 ### Added
