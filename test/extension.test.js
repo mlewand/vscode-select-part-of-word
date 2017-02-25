@@ -115,7 +115,7 @@
 
             return vscodeTestContent.setWithSelection( input )
                 .then( textEditor => {
-                    commands.moveLeft( textEditor );
+                    commands.moveRight( textEditor );
 
                     assert.equal( getContent.withSelection( textEditor ), expected );
                 } );
