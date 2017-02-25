@@ -370,6 +370,17 @@
                 } );
         } );
 
+        test( 'Move over unicode mixed with nonalpha chars', function() {
+            let input = 'aa śśćęęę.ęęść óóóÓÓÓóó.^ęęężźźź',
+                expected = 'aa śśćęęę.ęęść óóóÓÓÓóó^.ęęężźźź';
+
+            return vscodeTestContent.setWithSelection( input )
+                .then( editor => {
+                    commands.moveLeft( editor );
+                    assert.equal( getContent.withSelection( editor ), expected );
+                } );
+        } );
+
         test( 'Move over empty lines', function() {
             return vscode.workspace.openTextDocument( path.join( __dirname, '_fixtures', 'whitespaceTest.txt' ) )
                 .then( ( doc ) => {
