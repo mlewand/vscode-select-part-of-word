@@ -7,7 +7,8 @@
         commands = require( '../src/commands' ),
         common = require( '../src/common' ),
         path = require( 'path' ),
-        getContent = require( 'vscode-test-get-content' );
+        getContent = require( 'vscode-test-get-content' ),
+        vscodeTestContent = require( 'vscode-test-content' );
 
     suite( 'commands.moveRight', function() {
         test( 'Move within same text case collapsed', function() {
@@ -107,16 +108,14 @@
         } );
 
         test( 'Move over numbers', function() {
-            return vscode.workspace.openTextDocument( path.join( __dirname, '_fixtures', 'camelCase.txt' ) )
-                .then( ( doc ) => {
-                    return vscode.window.showTextDocument( doc );
-                } )
-                .then( textEditor => {
-                    let expected = 'thisIsACamelCaseWord itsSuperFun   to	writeIn-CamelCase\n' +
-                        'you could also mix it with12345^wordsToSee how it behaves with numbers';
-                    textEditor.selection = new vscode.Selection( 1, 26, 1, 26 );
+            let input = 'thisIsACamelCaseWord itsSuperFun   to	writeIn-CamelCase\n' +
+                    'you could also mix it with^12345wordsToSee how it behaves with numbers',
+                expected = 'thisIsACamelCaseWord itsSuperFun   to	writeIn-CamelCase\n' +
+                    'you could also mix it with12345^wordsToSee how it behaves with numbers';
 
-                    commands.moveRight( textEditor );
+            return vscodeTestContent.setWithSelection( input )
+                .then( textEditor => {
+                    commands.moveLeft( textEditor );
 
                     assert.equal( getContent.withSelection( textEditor ), expected );
                 } );
@@ -329,15 +328,13 @@
         } );
 
         test( 'Move over numbers', function() {
-            return vscode.workspace.openTextDocument( path.join( __dirname, '_fixtures', 'camelCase.txt' ) )
-                .then( ( doc ) => {
-                    return vscode.window.showTextDocument( doc );
-                } )
-                .then( textEditor => {
-                    let expected = 'thisIsACamelCaseWord itsSuperFun   to	writeIn-CamelCase\n' +
-                        'you could also mix it with^12345wordsToSee how it behaves with numbers';
-                    textEditor.selection = new vscode.Selection( 1, 31, 1, 31 );
+            let input = 'thisIsACamelCaseWord itsSuperFun   to	writeIn-CamelCase\n' +
+                    'you could also mix it with12345^wordsToSee how it behaves with numbers',
+                expected = 'thisIsACamelCaseWord itsSuperFun   to	writeIn-CamelCase\n' +
+                    'you could also mix it with^12345wordsToSee how it behaves with numbers';
 
+            return vscodeTestContent.setWithSelection( input )
+                .then( textEditor => {
                     commands.moveLeft( textEditor );
 
                     assert.equal( getContent.withSelection( textEditor ), expected );
@@ -813,7 +810,8 @@
             testValue( CHAR_TYPE.UPPER_CASE, 'Ĉ' );
             testValue( CHAR_TYPE.UPPER_CASE, 'Ű' );
             testValue( CHAR_TYPE.UPPER_CASE, 'Bac' );
-            testValue( CHAR_TYPE.OTHER, '0' );
+            testValue( CHAR_TYPE.NUMBER, '0' );
+            testValue( CHAR_TYPE.NUMBER, '8' );
             testValue( CHAR_TYPE.OTHER, '-' );
             testValue( CHAR_TYPE.OTHER, '' );
             testValue( CHAR_TYPE.WHITESPACE, ' ' );
