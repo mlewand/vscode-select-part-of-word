@@ -475,6 +475,14 @@
                     assert.equal( getContent.withSelection( textEditor ), expected );
                 } );
         } );
+
+        test( 'Plays well with CONSTANT_NOTATION', function() {
+            return vscodeTestContent.setWithSelection( 'HAVE_A_CONSTANT_LIKE_^THIS' )
+                .then( editor => {
+                    commands.moveLeft( editor );
+                    assert.equal( vscodeTestContent.getWithSelection( editor ), 'HAVE_A_CONSTANT_LIKE^_THIS' );
+                } );
+        } );
     } );
 
     suite( 'commands.selectRight', function() {
