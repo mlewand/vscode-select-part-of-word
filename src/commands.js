@@ -165,14 +165,14 @@ module.exports = {
 			matchAdjustment = 0;
 
 		if ( right && farAheadCharType !== curCharType &&
-			curCharType !== common.CHAR_TYPE.WHITESPACE && farAheadCharType !== common.CHAR_TYPE.WHITESPACE ) {
+			curCharType !== CHAR_TYPE.WHITESPACE && farAheadCharType !== CHAR_TYPE.WHITESPACE ) {
 			// Catches a case like: foo^BarBaz.
 			match = textAhead.substr( 1 ).search( common.regExpExcludeMapping[ farAheadCharType ] );
 			matchAdjustment = 1;
 		}
 
-		if ( !right && match !== -1 && this._getCharType( textAhead[ match ] ) === common.CHAR_TYPE.UPPER_CASE &&
-			curCharType === common.CHAR_TYPE.LOWER_CASE ) {
+		if ( !right && match !== -1 && this._getCharType( textAhead[ match ] ) === CHAR_TYPE.UPPER_CASE &&
+			curCharType === CHAR_TYPE.LOWER_CASE ) {
 			// Detects case like moving left with thisIsFanc^y - we want to move  the caret before
 			// uppercased letter.
 			match += 1;
