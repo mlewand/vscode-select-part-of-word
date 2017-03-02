@@ -171,7 +171,8 @@ module.exports = {
 			matchAdjustment = 1;
 		}
 
-		if ( !right && match !== -1 && this._getCharType( textAhead[ match ] ) === common.CHAR_TYPE.UPPER_CASE ) {
+		if ( !right && match !== -1 && this._getCharType( textAhead[ match ] ) === common.CHAR_TYPE.UPPER_CASE &&
+			curCharType === common.CHAR_TYPE.LOWER_CASE ) {
 			// Detects case like moving left with thisIsFanc^y - we want to move  the caret before
 			// uppercased letter.
 			match += 1;
