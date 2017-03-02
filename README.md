@@ -1,8 +1,7 @@
 
 # Select Part Of Word
 
-[![AppVeyor Build status](https://ci.appveyor.com/api/projects/status/itvoknoafkwjble6?svg=true&passingText=master%20%E2%9C%93)](https://ci.appveyor.com/project/mlewand/vscode-select-part-of-word)
-[![Travis Build Status](https://travis-ci.org/mlewand/vscode-select-part-of-word.svg?branch=master)](https://travis-ci.org/mlewand/vscode-select-part-of-word)
+[![AppVeyor Build status](https://ci.appveyor.com/api/projects/status/itvoknoafkwjble6?svg=true&passingText=master%20%E2%9C%93)](https://ci.appveyor.com/project/mlewand/vscode-select-part-of-word) [![Travis Build Status](https://travis-ci.org/mlewand/vscode-select-part-of-word.svg?branch=master)](https://travis-ci.org/mlewand/vscode-select-part-of-word) [![Marketplace Version](http://vsmarketplacebadge.apphb.com/version/mlewand.select-part-of-word.svg "Current Release")](https://marketplace.visualstudio.com/items?itemName=mlewand.select-part-of-word) [![The MIT License](https://img.shields.io/badge/license-MIT-green.svg?style=flat-square)](http://opensource.org/licenses/MIT)
 
 An extension that allows you to move selection by a word in camel-case string. This comes especially handy if you want to fix a typo in the middle of the variable, or just reword a part of it.
 
