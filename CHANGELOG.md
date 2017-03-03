@@ -4,6 +4,8 @@ All notable changes to the "Select part of word" extension will be documented in
 
 ## [Unreleased]
 
+## 1.0.1
+
 ### Fixed
 
 - [#24](https://github.com/mlewand/vscode-select-part-of-word/issues/24) - Fixed a case where move left through CONSTANT_NOTATION might put caret off by one character.
