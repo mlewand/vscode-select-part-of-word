@@ -27,7 +27,7 @@ Hotkey | Description
 
 This extension overrides several VSCode default hotkeys, like `CTRL+ALT+RIGHT` hotkey which is bound to `workbench.action.moveEditorToNextGroup` command (as of VSCode 1.10.2).
 
-If you'd like to use a different hotkey refer to [Visual Studio Code's Key Bindings Customization](https://code.visualstudio.com/docs/customization/keybindings#_customizing-shortcuts) article.
+If you'd like to use a different hotkey refer to [Visual Studio Code's Key Bindings Customization](https://code.visualstudio.com/docs/getstarted/keybindings#_keyboard-shortcuts-editor) article. All the contributed commands starts with `selectPartOfWord`.
 
 ## Looking For Feedback
 
